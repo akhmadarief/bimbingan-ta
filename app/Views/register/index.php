@@ -39,7 +39,7 @@
                     </div>
                     <form method="POST">
                       <?php if (isset($validation)) { ?>
-                      <div class="alert alert-danger" role="alert"><?= $validation->listErrors() ?></div>
+                      <div class="alert alert-danger" role="alert" style="padding-bottom: 0"><?= $validation->listErrors() ?></div>
                       <?php } ?>
                       <div class="mb-3">
                         <label class="form-label" for="split-role">Role</label>

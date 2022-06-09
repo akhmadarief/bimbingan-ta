@@ -13,8 +13,6 @@ class Register extends BaseController {
 
     public function index() {
 
-        helper(['form']);
-
         if ($this->request->getMethod() == 'post') {
             $rules = [
                 'name'              => 'required|min_length[3]|max_length[60]',
@@ -28,32 +26,44 @@ class Register extends BaseController {
             if ($this->validate($rules)) {
                 $name               = $this->request->getPost('name');
                 $nip_nim            = $this->request->getPost('nip_nim');
-                $email              = $this->request->getPost('email');
+                $user_email         = $this->request->getPost('email');
                 $password           = $this->request->getPost('password');
                 $confirm_password   = $this->request->getPost('confirm_password');
                 $role               = $this->request->getPost('role');
-                $token              = rand();
+                $token              = md5(rand());
                 $expired_at         = date('Y-m-d H:i:s', strtotime('1 hour'));
 
                 $this->user_model->insert([
                     'name'      => $name,
                     'nip_nim'   => $nip_nim,
-                    'email'     => $email,
+                    'email'     => $user_email,
                     'password'  => password_hash($password, PASSWORD_BCRYPT),
                     'role'      => $role
                 ]);
 
                 $this->token_model->insert([
-                    'user_email'    => $email,
+                    'user_email'    => $user_email,
                     'type'          => 0,
                     'token'         => $token,
                     'expired_at'    => $expired_at
                 ]);
 
-                $data['title'] = 'Confirm Mail';
-                $data['email'] = $email;
-                $data['msg'] = 'Please click on the included link to activate your account.';
-                return view('register/confirm_mail', $data);
+                $email = \Config\Services::email();
+
+                $email->setTo($user_email);
+                $email->setSubject('Konfirmasi Registrasi');
+                $email->setMessage('Testing the email class.<br><a href="'.base_url('register/verify/'.$token).'" target="_blank">Confirm</a>');
+
+                if ($email->send()) {
+                    $data['title'] = 'Confirm Mail';
+                    $data['email'] = $user_email;
+                    $data['msg'] = 'Please click on the included link to activate your account.';
+                    return view('register/confirm_mail', $data);
+                } 
+                else {
+                    $data = $email->printDebugger(['headers']);
+                    return print_r($data);
+                }
             }
             else {
                 $data['validation'] = $this->validator;
@@ -69,10 +79,11 @@ class Register extends BaseController {
         $user_token = $this->token_model->where(['token' => $token, 'type' => 0])->first();
 
         if ($user_token && $user_token->expired_at > date('Y-m-d H:i:s')) {
+
             $this->user_model->where(['email' => $user_token->user_email])->set(['email_verified' => 1])->update();
-            echo 'Your Email Address is successfully verified.<br>Please login to access your account.';
-            echo '<br>';
-            echo '<a href="'.base_url('login').'">Login</a>';
+
+            session()->remove(['id', 'name', 'email', 'logged_in']);
+            return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your Email Address is successfully verified.<br>Please login to access your account.</div>');
         }
         else if ($user_token && $user_token->expired_at < date('Y-m-d H:i:s')) {
             echo 'Expired.';

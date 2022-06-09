@@ -35,7 +35,7 @@ class Auth extends BaseController {
                 return redirect()->to(base_url())->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
             }
             else {
-                return redirect()->to(base_url('login'))->with('alert', 'Login failed. Please check email and password then try again.');
+                return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-danger" role="alert">Login failed. Please check email and password then try again.</div>');
             }
         }
 
@@ -47,27 +47,39 @@ class Auth extends BaseController {
 
         if ($this->request->getMethod() == 'post') {
 
-            $email = $this->request->getPost('email');
-            $user = $this->user_model->where(['email' => $email])->first();
+            $user_email = $this->request->getPost('email');
+            $user = $this->user_model->where(['email' => $user_email])->first();
 
             if ($user) {
-                $token      = rand();
+                $token      = md5(rand());
                 $expired_at = date('Y-m-d H:i:s', strtotime('1 hour'));
 
                 $this->token_model->insert([
-                    'user_email'    => $email,
+                    'user_email'    => $user_email,
                     'type'          => 1,
                     'token'         => $token,
                     'expired_at'    => $expired_at
                 ]);
 
-                $data['title'] = 'Confirm Mail';
-                $data['email'] = $email;
-                $data['msg'] = 'Please click on the included link to reset your password.';
-                return view('register/confirm_mail', $data);
+                $email = \Config\Services::email();
+
+                $email->setTo($user_email);
+                $email->setSubject('Konfirmasi Reset Password');
+                $email->setMessage('Testing the email class.<br><a href="'.base_url('reset-password/'.$token).'" target="_blank">Confirm</a>');
+
+                if ($email->send()) {
+                    $data['title'] = 'Confirm Mail';
+                    $data['email'] = $user_email;
+                    $data['msg'] = 'Please click on the included link to reset your password.';
+                    return view('register/confirm_mail', $data);
+                } 
+                else {
+                    $data = $email->printDebugger(['headers']);
+                    return print_r($data);
+                }
             }
             else {
-                return redirect()->to(base_url('forgot-password'))->with('alert', "Couldn't find yout account.");
+                return redirect()->to(base_url('forgot-password'))->with('alert', '<div class="alert alert-danger" role="alert">Your email is not registered.</div>');
             }
         }
 
@@ -88,15 +100,12 @@ class Auth extends BaseController {
                 ];
 
                 if ($this->validate($rules)) {
-                    $password   = $this->request->getPost('password');
+                    $password = $this->request->getPost('password');
 
-                    $this->user_model->save([
-                        'id'        => session('id'),
-                        'password'  => password_hash($password, PASSWORD_BCRYPT)
-                    ]);
+                    $this->user_model->where(['email' => $user_token->user_email])->set(['password' => password_hash($password, PASSWORD_BCRYPT)])->update();
 
                     session()->remove(['id', 'name', 'email', 'logged_in']);
-                    return redirect()->to(base_url('login'))->with('alert', "Your password is successfully reset.<br>Please login again.");
+                    return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your password is successfully reset.<br>Please login again.</div>');
                 }
                 else {
                     $data['validation'] = $this->validator;

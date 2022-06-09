@@ -38,9 +38,7 @@
                       <div class="col-auto fs--1 text-600"><span class="mb-0 fw-semi-bold">New User?</span> <span><a href="<?= base_url('register') ?>">Create account</a></span></div>
                     </div>
                     <form method="POST">
-                      <?php if (!empty(session()->getFlashdata('alert'))) { ?>
-                      <div class="alert alert-danger" role="alert"><?= session()->getFlashdata('alert') ?></div>
-                      <?php } ?>
+                      <?= session()->getFlashdata('alert') ?>
                       <div class="mb-3">
                         <label class="form-label" for="split-login-email">Email address</label>
                         <input class="form-control" id="split-login-email" type="email" name="email" required />
