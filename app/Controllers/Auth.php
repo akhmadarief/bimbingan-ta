@@ -54,12 +54,7 @@ class Auth extends BaseController {
                 $token      = md5(rand());
                 $expired_at = date('Y-m-d H:i:s', strtotime('1 hour'));
 
-                $this->token_model->insert([
-                    'user_email'    => $user_email,
-                    'type'          => 1,
-                    'token'         => $token,
-                    'expired_at'    => $expired_at
-                ]);
+                $this->token_model->where(['user_email' => $user_email])->set(['type' => 1,'token' => $token, 'expired_at' => $expired_at])->update();
 
                 $email = \Config\Services::email();
 
@@ -72,7 +67,7 @@ class Auth extends BaseController {
                     $data['email'] = $user_email;
                     $data['msg'] = 'Please click on the included link to reset your password.';
                     return view('register/confirm_mail', $data);
-                } 
+                }
                 else {
                     $data = $email->printDebugger(['headers']);
                     return print_r($data);
@@ -102,7 +97,7 @@ class Auth extends BaseController {
                 if ($this->validate($rules)) {
                     $password = $this->request->getPost('password');
 
-                    $this->user_model->where(['email' => $user_token->user_email])->set(['password' => password_hash($password, PASSWORD_BCRYPT)])->update();
+                    $this->user_model->where(['email' => $user_token->user_email])->set(['password' => password_hash($password, PASSWORD_BCRYPT), 'email_verified' => 1])->update();
 
                     session()->remove(['id', 'name', 'email', 'logged_in']);
                     return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your password is successfully reset.<br>Please login again.</div>');

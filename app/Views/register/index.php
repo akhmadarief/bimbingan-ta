@@ -54,8 +54,8 @@
                         <input class="form-control" type="text" autocomplete="on" id="split-name" name="name" required />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label" for="nip_nim">NIP/NIM</label>
-                        <input class="form-control" type="text" autocomplete="on" id="nip_nim" name="nip_nim" required />
+                        <label class="form-label" for="nip/nim">NIP/NIM</label>
+                        <input class="form-control" type="text" autocomplete="on" id="nip/nim" name="nip/nim" required />
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="split-email">Email address</label>

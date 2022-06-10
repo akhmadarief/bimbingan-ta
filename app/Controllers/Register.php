@@ -16,7 +16,7 @@ class Register extends BaseController {
         if ($this->request->getMethod() == 'post') {
             $rules = [
                 'name'              => 'required|min_length[3]|max_length[60]',
-                'nip_nim'           => 'required|min_length[14]|max_length[18]|is_natural|is_unique[user.nip_nim]',
+                'nip/nim'           => 'required|min_length[14]|max_length[20]|is_natural',
                 'email'             => 'required|min_length[6]|max_length[60]|valid_email|is_unique[user.email]',
                 'password'          => 'required|min_length[6]|max_length[60]',
                 'confirm_password'  => 'matches[password]',
@@ -25,7 +25,7 @@ class Register extends BaseController {
 
             if ($this->validate($rules)) {
                 $name               = $this->request->getPost('name');
-                $nip_nim            = $this->request->getPost('nip_nim');
+                $nip_nim            = $this->request->getPost('nip/nim');
                 $user_email         = $this->request->getPost('email');
                 $password           = $this->request->getPost('password');
                 $confirm_password   = $this->request->getPost('confirm_password');
