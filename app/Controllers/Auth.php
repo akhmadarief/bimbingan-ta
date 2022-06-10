@@ -30,6 +30,7 @@ class Auth extends BaseController {
                     'id'        => $user->id,
                     'name'      => $user->name,
                     'email'     => $user->email,
+                    'role'      => $user->role,
                     'logged_in' => true
                 ]);
                 return redirect()->to(base_url())->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
