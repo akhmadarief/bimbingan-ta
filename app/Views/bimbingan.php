@@ -12,10 +12,15 @@
               </div>
             </div>
             <div class="card-body pt-0">
-              <div class="d-flex align-items-center justify-content-end my-3">
-                <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#new"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
-              </div>
               <div id="tableExample2" data-list='{"valueNames":["mhs","dosen","jenis","topik","created_at","status"],"page":5,"pagination":true}'>
+                <div class="row g-2 justify-content-end mb-3">
+                  <div class="col-sm-2">
+                    <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="City">
+                  </div>
+                  <div class="col-sm-auto">
+                    <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#new"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
+                  </div>
+                </div>
                 <div class="table-responsive scrollbar">
                   <table class="table table-bordered table-striped fs--1 mb-0">
                     <thead class="bg-200 text-900">
@@ -36,7 +41,7 @@
                         <td class="text-center"><?= $no++ ?></td>
                         <td class="mhs"><?= $bimbingan->mhs ?><br><?= $bimbingan->nim ?></td>
                         <td class="dosen"><?= $bimbingan->dosen ?><br><?= $bimbingan->nip ?></td>
-                        <td class="jenis text-center"><?= $bimbingan->jenis ?></td>
+                        <td class="jenis text-center"><?= $bimbingan->jenis == 1 ? 'Tugas Akhir' : ($bimbingan->jenis == 2 ? 'Kerja Praktik' : ($bimbingan->jenis == 3 ? 'Perlombaan' : ($bimbingan->jenis == 4 ? 'Penelitian' : ($bimbingan->jenis == 5 ? 'Perwalian' : 'Lainnya')))) ?></td>
                         <td class="topik"><?= $bimbingan->topik ?></td>
                         <td class="created_at text-center"><?= $bimbingan->created_at ?></td>
                         <td class="status text-center">
@@ -88,10 +93,11 @@
                         <select class="form-select" aria-label="jenis" name="jenis" required>
                           <option value="">Pilih jenis bimbingan</option>
                           <option value="1">Tugas Akhir</option>
-                          <option value="2">Perlombaan</option>
-                          <option value="3">Penelitian</option>
-                          <option value="4">Perwalian</option>
-                          <option value="5">Lainnya</option>
+                          <option value="2">Kerja Praktik</option>
+                          <option value="3">Perlombaan</option>
+                          <option value="4">Penelitian</option>
+                          <option value="5">Perwalian</option>
+                          <option value="6">Lainnya</option>
                         </select>
                       </div>
                       <div class="mb-3">
