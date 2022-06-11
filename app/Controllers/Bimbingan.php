@@ -11,10 +11,35 @@ class Bimbingan extends BaseController {
         $this->bimbingan_model  = new BimbinganModel();
     }
 
-    public function index() {
-        $data['title']      = 'Bimbingan';
-        $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan("id_dosen='".session('id')."' OR id_mhs='".session('id')."'")->getResult();
-        $data['dosen']      = $this->user_model->where(['role' => 'dosen'])->findAll();
+    public function submission() {
+        $data['title']      = 'Pengajuan Bimbingan';
+        $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan("(id_dosen='".session('id')."' OR id_mhs='".session('id')."') AND (status=0 OR status=3)")->getResult();
+
+        if (session('role') == 'mhs') {
+            $data['dosen']  = $this->user_model->where(['role' => 'dosen'])->findAll();
+        }
+
+        return view('bimbingan', $data);
+    }
+
+    public function on_progress() {
+        $data['title']      = 'Bimbingan Berjalan';
+        $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan("(id_dosen='".session('id')."' OR id_mhs='".session('id')."') AND status=1")->getResult();
+
+        if (session('role') == 'mhs') {
+            $data['dosen']  = $this->user_model->where(['role' => 'dosen'])->findAll();
+        }
+
+        return view('bimbingan', $data);
+    }
+
+    public function completed() {
+        $data['title']      = 'Bimbingan Selesai';
+        $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan("(id_dosen='".session('id')."' OR id_mhs='".session('id')."') AND status=2")->getResult();
+
+        if (session('role') == 'mhs') {
+            $data['dosen']  = $this->user_model->where(['role' => 'dosen'])->findAll();
+        }
 
         return view('bimbingan', $data);
     }

@@ -9,12 +9,13 @@ class BimbinganModel extends Model {
     protected $allowedFields    = ['id', 'id_dosen', 'id_mhs', 'jenis', 'topik', 'status'];
     protected $useTimestamps    = true;
 
-    public function detail_bimbingan($where = '1 = 1') {
+    public function detail_bimbingan($where = 1) {
         $builder = $this->db->table('bimbingan');
-        $builder->select('bimbingan.id, id_dosen, dosen.nip_nim as nip, dosen.name as dosen, id_mhs, mhs.nip_nim as nim, mhs.name as mhs, jenis, topik, bimbingan.created_at');
+        $builder->select('bimbingan.id, id_dosen, dosen.nip_nim as nip, dosen.name as dosen, id_mhs, mhs.nip_nim as nim, mhs.name as mhs, jenis, topik, status, bimbingan.created_at');
         $builder->join('user as dosen', 'bimbingan.id_dosen = dosen.id');
         $builder->join('user as mhs', 'bimbingan.id_mhs = mhs.id');
         $builder->where($where);
+        $builder->orderBy('status', 'ASC');
         $builder->orderBy('bimbingan.created_at', 'DESC');
         $query = $builder->get();
         return $query;

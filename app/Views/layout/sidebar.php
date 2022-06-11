@@ -44,10 +44,30 @@
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-comments"></span></span><span class="nav-link-text ps-1">Chat</span>
                     </div>
                   </a>
-                  <a class="nav-link <?= $title == 'Bimbingan' ? 'active' : '' ?>" href="<?= base_url('bimbingan') ?>" role="button" aria-expanded="false">
+                  <a class="nav-link dropdown-indicator" href="#bimbingan" role="button" data-bs-toggle="collapse" aria-expanded="<?= ($title == 'Pengajuan Bimbingan' || $title == 'Bimbingan Berjalan' || $title == 'Bimbingan Selesai') ? 'true' : 'false' ?>" aria-controls="bimbingan">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-book"></span></span><span class="nav-link-text ps-1">Bimbingan</span>
                     </div>
                   </a>
+                  <ul class="nav collapse <?= ($title == 'Pengajuan Bimbingan' || $title == 'Bimbingan Berjalan' || $title == 'Bimbingan Selesai') ? 'show' : 'false' ?>" id="bimbingan">
+                    <li class="nav-item">
+                      <a class="nav-link <?= $title == 'Pengajuan Bimbingan' ? 'active' : '' ?>" href="<?= base_url('bimbingan/submission') ?>" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pengajuan</span>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link <?= $title == 'Bimbingan Berjalan' ? 'active' : '' ?>" href="<?= base_url('bimbingan/on-progress') ?>" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Berjalan</span>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link <?= $title == 'Bimbingan Selesai' ? 'active' : '' ?>" href="<?= base_url('bimbingan/completed') ?>" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Selesai</span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
                   <?php } ?>
                   <a class="nav-link <?= $title == 'User Settings' ? 'active' : '' ?>" href="<?= base_url('user/settings') ?>" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-cog"></span></span><span class="nav-link-text ps-1">Settings</span>

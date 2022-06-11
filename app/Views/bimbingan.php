@@ -6,7 +6,7 @@
             <div class="card-header">
               <div class="row flex-between-end">
                 <div class="col-auto align-self-center">
-                  <h5 class="mb-0" data-anchor="data-anchor">Pagination with numbering</h5>
+                  <h5 class="mb-0" data-anchor="data-anchor"><?= $title ?></h5>
                   <p class="mb-0 mt-2 mb-0">Add <code> pagination </code> class for enable number pagination. The following structure will enable number pagination with next and previous button.</p>
                 </div>
               </div>
@@ -45,7 +45,15 @@
                         <td class="topik"><?= $bimbingan->topik ?></td>
                         <td class="created_at text-center"><?= $bimbingan->created_at ?></td>
                         <td class="status text-center">
+                        <?php if ($bimbingan->status == 0) { ?>
+                          <span class="badge badge rounded-pill d-block p-2 badge-soft-warning">Pending<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                        <?php } else if ($bimbingan->status == 1) { ?>
+                          <span class="badge badge rounded-pill d-block p-2 badge-soft-primary">On Progress<span class="ms-1 fas fa-sync" data-fa-transform="shrink-2"></span></span>
+                        <?php } else if ($bimbingan->status == 2) { ?>
                           <span class="badge badge rounded-pill d-block p-2 badge-soft-success">Completed<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                        <?php } else { ?>
+                          <span class="badge badge rounded-pill d-block p-2 badge-soft-danger">Rejected<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                        <?php } ?>
                         </td>
                         <td class="text-center">
                           <div>
@@ -76,7 +84,7 @@
                 </div>
                 <div class="modal-body p-0">
                   <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
-                    <h4 class="mb-1" id="modalExampleDemoLabel">Buat Bimbingan Baru</h4>
+                    <h4 class="mb-1" id="modalExampleDemoLabel">Pengajuan Bimbingan</h4>
                   </div>
                   <div class="p-4 pb-0">
                     <form method="POST" action="<?= base_url('bimbingan/new') ?>">
