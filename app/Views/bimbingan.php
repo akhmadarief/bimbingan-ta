@@ -12,22 +12,23 @@
               </div>
             </div>
             <div class="card-body pt-0">
-              <div id="tableExample2" data-list='{"valueNames":["mhs","dosen","jenis","topik","created_at","status"],"page":5,"pagination":true}'>
+              <div id="tableBimbingan" data-list='{"valueNames":["name","jenis","topik","created_at","status"],"page":5,"pagination":true}'>
                 <div class="row g-2 justify-content-end mb-3">
                   <div class="col-sm-2">
                     <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="City">
                   </div>
+                  <?php if (session('role') == 'mhs') { ?>
                   <div class="col-sm-auto">
                     <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#new"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
                   </div>
+                  <?php } ?>
                 </div>
                 <div class="table-responsive scrollbar">
                   <table class="table table-bordered table-striped fs--1 mb-0">
                     <thead class="bg-200 text-900">
                       <tr>
                         <th class="text-center" data-sort="no">No.</th>
-                        <th class="sort text-center" data-sort="mhs">Mahasiswa</th>
-                        <th class="sort text-center" data-sort="dosen">Dosen</th>
+                        <th class="sort text-center" data-sort="name"><?= session('role') == 'mhs' ? 'Dosen' : 'Mahasiswa' ?></th>
                         <th class="sort text-center" data-sort="jenis">Jenis</th>
                         <th class="sort text-center" data-sort="topik">Topik</th>
                         <th class="sort text-center" data-sort="created_at">Tanggal</th>
@@ -39,8 +40,7 @@
                       <?php $no = 1; foreach ($bimbingan as $bimbingan) { ?>
                       <tr>
                         <td class="text-center"><?= $no++ ?></td>
-                        <td class="mhs"><?= $bimbingan->mhs ?><br><?= $bimbingan->nim ?></td>
-                        <td class="dosen"><?= $bimbingan->dosen ?><br><?= $bimbingan->nip ?></td>
+                        <td class="name"><?= session('role') == 'mhs' ? $bimbingan->dosen : $bimbingan->mhs ?><br><?= session('role') == 'mhs' ? $bimbingan->nip : $bimbingan->nim ?></td>
                         <td class="jenis text-center"><?= $bimbingan->jenis == 1 ? 'Tugas Akhir' : ($bimbingan->jenis == 2 ? 'Kerja Praktik' : ($bimbingan->jenis == 3 ? 'Perlombaan' : ($bimbingan->jenis == 4 ? 'Penelitian' : ($bimbingan->jenis == 5 ? 'Perwalian' : 'Lainnya')))) ?></td>
                         <td class="topik"><?= $bimbingan->topik ?></td>
                         <td class="created_at text-center"><?= $bimbingan->created_at ?></td>
@@ -67,6 +67,7 @@
             </div>
           </div>
 
+          <?php if (session('role') == 'mhs') { ?>
           <div class="modal fade" id="new" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
               <div class="modal-content position-relative">
@@ -114,5 +115,6 @@
               </div>
             </div>
           </div>
+          <?php } ?>
 
 <?= $this->endSection() ?>

@@ -20,6 +20,12 @@ class Bimbingan extends BaseController {
     }
 
     public function new() {
+
+        if (session('role') != 'mhs') {
+            echo 'Forbidden';
+            return;
+        }
+
         $dosen  = $this->request->getPost('dosen');
         $jenis  = $this->request->getPost('jenis');
         $topik  = $this->request->getPost('topik');
