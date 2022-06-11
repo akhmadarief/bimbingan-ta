@@ -217,7 +217,7 @@ class Auth extends BaseController {
                     $data['title'] = 'Confirm Mail';
                     $data['email'] = $user_email;
                     $data['msg'] = 'Please click on the included link to reset your password.';
-                    return view('register/confirm_mail', $data);
+                    return view('auth/confirm_mail', $data);
                 }
                 else {
                     $data = $email->printDebugger(['headers']);

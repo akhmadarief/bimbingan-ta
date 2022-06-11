@@ -208,7 +208,7 @@ class Register extends BaseController {
                     $data['title'] = 'Confirm Mail';
                     $data['email'] = $user_email;
                     $data['msg'] = 'Please click on the included link to activate your account.';
-                    return view('register/confirm_mail', $data);
+                    return view('auth/confirm_mail', $data);
                 } 
                 else {
                     $data = $email->printDebugger(['headers']);
@@ -221,7 +221,7 @@ class Register extends BaseController {
         }
 
         $data['title'] = 'Register';
-        return view('register/index', $data);
+        return view('auth/register', $data);
     }
 
     public function verify($token = NULL) {
