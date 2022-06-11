@@ -20,7 +20,6 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
                   <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                    <a class="dropdown-item" href="<?= base_url('user/profile') ?>">Profile</a>
                     <a class="dropdown-item" href="<?= base_url('user/settings') ?>">Settings</a>
                     <a class="dropdown-item" href="<?= base_url('logout') ?>">Logout</a>
                   </div>

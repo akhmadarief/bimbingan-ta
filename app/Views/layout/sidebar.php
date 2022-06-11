@@ -29,26 +29,26 @@
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-chart-pie"></span></span><span class="nav-link-text ps-1">Dashboard</span>
                     </div>
                   </a>
-                  <a class="nav-link <?= $title == 'User Profile' ? 'active' : '' ?>" href="<?= base_url('user/profile') ?>" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">Profile</span>
-                    </div>
-                  </a>
-                  <!-- <a class="nav-link <?= $title == 'Dosen' ? 'active' : '' ?>" href="<?= base_url('dosen') ?>" role="button" aria-expanded="false">
+                  <?php if (session()->role == 'admin') { ?>
+                  <a class="nav-link <?= $title == 'Dosen' ? 'active' : '' ?>" href="<?= base_url('dosen') ?>" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">Dosen</span>
                     </div>
                   </a>
                   <a class="nav-link <?= $title == 'Mahasiswa' ? 'active' : '' ?>" href="<?= base_url('mahasiswa') ?>" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">Mahasiswa</span>
                     </div>
-                  </a> -->
-                  <a class="nav-link <?= $title == 'Bimbingan' ? 'active' : '' ?>" href="<?= base_url('bimbingan') ?>" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-book"></span></span><span class="nav-link-text ps-1">Bimbingan</span>
-                    </div>
                   </a>
+                  <?php } ?>
+                  <?php if (session()->role != 'admin') { ?>
                   <a class="nav-link <?= $title == 'Chat' ? 'active' : '' ?>" href="<?= base_url('chat') ?>" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-comments"></span></span><span class="nav-link-text ps-1">Chat</span>
                     </div>
                   </a>
+                  <a class="nav-link <?= $title == 'Bimbingan' ? 'active' : '' ?>" href="<?= base_url('bimbingan') ?>" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-book"></span></span><span class="nav-link-text ps-1">Bimbingan</span>
+                    </div>
+                  </a>
+                  <?php } ?>
                   <a class="nav-link <?= $title == 'User Settings' ? 'active' : '' ?>" href="<?= base_url('user/settings') ?>" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-cog"></span></span><span class="nav-link-text ps-1">Settings</span>
                     </div>

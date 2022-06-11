@@ -9,12 +9,6 @@ class User extends BaseController {
         $this->user_model = new UserModel();
     }
 
-    public function profile() {
-        $data['title'] = 'User Profile';
-        $data['user'] = $this->user_model->where(['id' => session('id')])->first();
-        return view('user/profile', $data);
-    }
-
     public function settings() {
         $data['title'] = 'User Settings';
         $data['user'] = $this->user_model->where(['id' => session('id')])->first();
@@ -36,6 +30,7 @@ class User extends BaseController {
                 $nip_nim    = $this->request->getPost('nip/nim');
 
                 $this->user_model->save(['id' => $id, 'name' => $name, 'nip_nim' => $nip_nim]);
+                session()->set('name', $name);
                 session()->setFlashdata('toastr', 'toastr.success("Berhasil memperbarui profil")');
             }
             else {
