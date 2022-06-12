@@ -33,7 +33,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('dashboard', 'Dashboard::index', ['filter' => 'authfilter']);
+$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth_filter']);
 
 $routes->group('/', function($routes) {
     $routes->get('login', 'Auth::login');
@@ -45,18 +45,27 @@ $routes->group('/', function($routes) {
     $routes->get('logout', 'Auth::logout');
 });
 
-$routes->group('bimbingan', ['filter' => 'authfilter'], function($routes) {
-    $routes->get('/', 'Bimbingan::index');
-    $routes->get('detail', 'Bimbingan::detail');
-    $routes->post('new', 'Bimbingan::new');
+$routes->group('admin/user', ['filter' => 'admin_filter'], function($routes) {
+    $routes->get('dosen', 'Admin\User::dosen');
+    $routes->get('mhs', 'Admin\User::mhs');
 });
 
-$routes->group('dosen', ['filter' => 'authfilter'], function($routes) {
-    $routes->get('/', 'Dosen::index');
+$routes->group('dosen/bimbingan', ['filter' => 'dosen_filter'], function($routes) {
+    $routes->get('submission', 'Dosen\Bimbingan::submission');
+    $routes->get('on-progress', 'Dosen\Bimbingan::on_progress');
+    $routes->get('completed', 'Dosen\Bimbingan::completed');
+    $routes->get('approve/(:num)', 'Dosen\Bimbingan::approve/$1');
+    $routes->get('cancel-approve/(:num)', 'Dosen\Bimbingan::approve/$1');
+    $routes->get('reject/(:num)', 'Dosen\Bimbingan::reject/$1');
+    $routes->get('mark-as-completed/(:num)', 'Dosen\Bimbingan::mark_as_completed/$1');
+    $routes->get('mark-as-on-progress/(:num)', 'Dosen\Bimbingan::mark_as_on_progress/$1');
 });
 
-$routes->group('mahasiswa', ['filter' => 'authfilter'], function($routes) {
-    $routes->get('/', 'Mahasiswa::index');
+$routes->group('mhs/bimbingan', ['filter' => 'mhs_filter'], function($routes) {
+    $routes->get('submission', 'Mhs\Bimbingan::submission');
+    $routes->get('on-progress', 'Mhs\Bimbingan::on_progress');
+    $routes->get('completed', 'Mhs\Bimbingan::completed');
+    $routes->post('new', 'Mhs\Bimbingan::new');
 });
 
 /*
