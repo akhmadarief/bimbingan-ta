@@ -27,13 +27,13 @@
                   <table class="table table-bordered table-striped fs--1 mb-0">
                     <thead class="bg-200 text-900">
                       <tr>
-                        <th class="text-center" data-sort="no">No.</th>
+                        <th class="no-sort text-center">No.</th> 
                         <th class="sort text-center" data-sort="name"><?= session('role') == 'mhs' ? 'Dosen' : 'Mahasiswa' ?></th>
                         <th class="sort text-center" data-sort="jenis">Jenis</th>
                         <th class="sort text-center" data-sort="topik">Topik</th>
                         <th class="sort text-center" data-sort="created_at">Tanggal</th>
                         <th class="sort text-center" data-sort="status">Status</th>
-                        <th class="text-center">Actions</th>
+                        <th class="no-sort text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody class="list">
@@ -56,9 +56,29 @@
                         <?php } ?>
                         </td>
                         <td class="text-center">
-                          <div>
-                            <a class="btn p-0" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Details" href="#"><span class="text-500 fas fa-paper-plane"></span></a>
-                            <!-- <button class="btn p-0 ms-2" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><span class="text-500 fas fa-trash-alt"></span></button> -->
+                          <div class="dropdown font-sans-serif position-static">
+                            <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                            <div class="dropdown-menu dropdown-menu-end border py-0">
+                              <div class="bg-white py-2">
+                              <?php if ($title == 'Pengajuan Bimbingan' && session('role') == 'dosen') { ?>
+                                <a class="dropdown-item text" href="<?= base_url('bimbingan/approve/'.$bimbingan->id) ?>">Approve</a>
+                                <?php if ($bimbingan->status == 0) { ?>
+                                <a class="dropdown-item text-danger" href="<?= base_url('bimbingan/reject/'.$bimbingan->id) ?>">Reject</a>
+                                <?php } ?>
+                              <?php } else if ($title == 'Pengajuan Bimbingan' && session('role') == 'mhs') { ?>
+                                <a class="dropdown-item text" href="#!">Edit</a>
+                                <a class="dropdown-item text-danger" href="#!">Delete</a>
+                              <?php } else if ($title == 'Bimbingan Berjalan') { ?>
+                                <a class="dropdown-item text" href="#!">Detail</a>
+                                <?php if (session('role') == 'dosen') { ?>
+                                <a class="dropdown-item text" href="<?= base_url('bimbingan/mark-as-completed/'.$bimbingan->id) ?>">Mark as Completed</a>
+                                <a class="dropdown-item text-danger" href="<?= base_url('bimbingan/cancel-approve/'.$bimbingan->id) ?>">Cancel Approve</a>
+                                <?php } ?>
+                              <?php } else if ($title == 'Bimbingan Selesai' && session('role') == 'dosen') { ?>
+                                <a class="dropdown-item text" href="<?= base_url('bimbingan/mark-as-on-progress/'.$bimbingan->id) ?>">Mask as On Progress</a>
+                              <?php } ?>
+                              </div>
+                            </div>
                           </div>
                         </td>
                       </tr>
