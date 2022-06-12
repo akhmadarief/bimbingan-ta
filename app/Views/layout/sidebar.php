@@ -39,7 +39,7 @@
                     </div>
                   </a>
                   <?php } ?>
-                  <?php if (session()->role != 'admin') { ?>
+                  <?php if (session()->role == 'dosen' || session()->role == 'mhs') { ?>
                   <a class="nav-link <?= $title == 'Chat' ? 'active' : '' ?>" href="<?= base_url('chat') ?>" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-comments"></span></span><span class="nav-link-text ps-1">Chat</span>
                     </div>
@@ -50,19 +50,19 @@
                   </a>
                   <ul class="nav collapse <?= ($title == 'Pengajuan Bimbingan' || $title == 'Bimbingan Berjalan' || $title == 'Bimbingan Selesai') ? 'show' : 'false' ?>" id="bimbingan">
                     <li class="nav-item">
-                      <a class="nav-link <?= $title == 'Pengajuan Bimbingan' ? 'active' : '' ?>" href="<?= base_url('bimbingan/submission') ?>" aria-expanded="false">
+                      <a class="nav-link <?= $title == 'Pengajuan Bimbingan' ? 'active' : '' ?>" href="<?= base_url(session()->role.'/bimbingan/submission') ?>" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pengajuan</span>
                         </div>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link <?= $title == 'Bimbingan Berjalan' ? 'active' : '' ?>" href="<?= base_url('bimbingan/on-progress') ?>" aria-expanded="false">
+                      <a class="nav-link <?= $title == 'Bimbingan Berjalan' ? 'active' : '' ?>" href="<?= base_url(session()->role.'/bimbingan/on-progress') ?>" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Berjalan</span>
                         </div>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link <?= $title == 'Bimbingan Selesai' ? 'active' : '' ?>" href="<?= base_url('bimbingan/completed') ?>" aria-expanded="false">
+                      <a class="nav-link <?= $title == 'Bimbingan Selesai' ? 'active' : '' ?>" href="<?= base_url(session()->role.'/bimbingan/completed') ?>" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Selesai</span>
                         </div>
                       </a>

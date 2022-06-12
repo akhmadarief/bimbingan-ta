@@ -61,9 +61,9 @@
                             <div class="dropdown-menu dropdown-menu-end border py-0">
                               <div class="bg-white py-2">
                               <?php if ($title == 'Pengajuan Bimbingan' && session('role') == 'dosen') { ?>
-                                <a class="dropdown-item text" href="<?= base_url('bimbingan/approve/'.$bimbingan->id) ?>">Approve</a>
+                                <a class="dropdown-item text" href="<?= base_url('dosen/bimbingan/approve/'.$bimbingan->id) ?>">Approve</a>
                                 <?php if ($bimbingan->status == 0) { ?>
-                                <a class="dropdown-item text-danger" href="<?= base_url('bimbingan/reject/'.$bimbingan->id) ?>">Reject</a>
+                                <a class="dropdown-item text-danger" href="<?= base_url('dosen/bimbingan/reject/'.$bimbingan->id) ?>">Reject</a>
                                 <?php } ?>
                               <?php } else if ($title == 'Pengajuan Bimbingan' && session('role') == 'mhs') { ?>
                                 <a class="dropdown-item text" href="#!">Edit</a>
@@ -71,11 +71,11 @@
                               <?php } else if ($title == 'Bimbingan Berjalan') { ?>
                                 <a class="dropdown-item text" href="#!">Detail</a>
                                 <?php if (session('role') == 'dosen') { ?>
-                                <a class="dropdown-item text" href="<?= base_url('bimbingan/mark-as-completed/'.$bimbingan->id) ?>">Mark as Completed</a>
-                                <a class="dropdown-item text-danger" href="<?= base_url('bimbingan/cancel-approve/'.$bimbingan->id) ?>">Cancel Approve</a>
+                                <a class="dropdown-item text" href="<?= base_url('dosen/bimbingan/mark-as-completed/'.$bimbingan->id) ?>">Mark as Completed</a>
+                                <a class="dropdown-item text-danger" href="<?= base_url('dosen/bimbingan/cancel-approve/'.$bimbingan->id) ?>">Cancel Approve</a>
                                 <?php } ?>
                               <?php } else if ($title == 'Bimbingan Selesai' && session('role') == 'dosen') { ?>
-                                <a class="dropdown-item text" href="<?= base_url('bimbingan/mark-as-on-progress/'.$bimbingan->id) ?>">Mask as On Progress</a>
+                                <a class="dropdown-item text" href="<?= base_url('dosen/bimbingan/mark-as-on-progress/'.$bimbingan->id) ?>">Mask as On Progress</a>
                               <?php } ?>
                               </div>
                             </div>
@@ -107,7 +107,7 @@
                     <h4 class="mb-1" id="modalExampleDemoLabel">Pengajuan Bimbingan</h4>
                   </div>
                   <div class="p-4 pb-0">
-                    <form method="POST" action="<?= base_url('bimbingan/new') ?>">
+                    <form method="POST" action="<?= base_url('mhs/bimbingan/new') ?>">
                       <div class="mb-3">
                         <label class="col-form-label" for="dosen">Dosen:</label>
                         <select class="form-select" aria-label="dosen" name="dosen" required>
