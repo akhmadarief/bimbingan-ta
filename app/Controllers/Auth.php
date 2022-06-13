@@ -14,7 +14,7 @@ class Auth extends BaseController {
     public function login() {
 
         if (session()->get('logged_in')) {
-            return redirect()->to(base_url());
+            return redirect()->to(base_url('dashboard'));
         }
 
         if ($this->request->getMethod() == 'post') {
@@ -33,7 +33,7 @@ class Auth extends BaseController {
                     'role'      => $user->role,
                     'logged_in' => true
                 ]);
-                return redirect()->to(base_url())->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
+                return redirect()->to(base_url('dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
             }
             else {
                 return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-danger" role="alert">Login failed. Please check email and password then try again.</div>');
