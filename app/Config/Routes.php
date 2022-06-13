@@ -48,6 +48,7 @@ $routes->group('/', function($routes) {
 $routes->group('admin/user', ['filter' => 'admin_filter'], function($routes) {
     $routes->get('dosen', 'Admin\User::dosen');
     $routes->get('mhs', 'Admin\User::mhs');
+    $routes->post('add', 'Admin\User::add');
 });
 
 $routes->group('dosen/bimbingan', ['filter' => 'dosen_filter'], function($routes) {
@@ -55,7 +56,7 @@ $routes->group('dosen/bimbingan', ['filter' => 'dosen_filter'], function($routes
     $routes->get('on-progress', 'Dosen\Bimbingan::on_progress');
     $routes->get('completed', 'Dosen\Bimbingan::completed');
     $routes->get('approve/(:num)', 'Dosen\Bimbingan::approve/$1');
-    $routes->get('cancel-approve/(:num)', 'Dosen\Bimbingan::approve/$1');
+    $routes->get('cancel-approve/(:num)', 'Dosen\Bimbingan::cancel_approve/$1');
     $routes->get('reject/(:num)', 'Dosen\Bimbingan::reject/$1');
     $routes->get('mark-as-completed/(:num)', 'Dosen\Bimbingan::mark_as_completed/$1');
     $routes->get('mark-as-on-progress/(:num)', 'Dosen\Bimbingan::mark_as_on_progress/$1');

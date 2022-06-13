@@ -30,14 +30,24 @@
                     </div>
                   </a>
                   <?php if (session()->role == 'admin') { ?>
-                  <a class="nav-link <?= $title == 'Dosen' ? 'active' : '' ?>" href="<?= base_url('dosen') ?>" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">Dosen</span>
+                  <a class="nav-link dropdown-indicator" href="#user" role="button" data-bs-toggle="collapse" aria-expanded="<?= ($title == 'Dosen' || $title == 'Mahasiswa') ? 'true' : 'false' ?>" aria-controls="user">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">User</span>
                     </div>
                   </a>
-                  <a class="nav-link <?= $title == 'Mahasiswa' ? 'active' : '' ?>" href="<?= base_url('mahasiswa') ?>" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">Mahasiswa</span>
-                    </div>
-                  </a>
+                  <ul class="nav collapse <?= ($title == 'Dosen' || $title == 'Mahasiswa') ? 'show' : 'false' ?>" id="user">
+                    <li class="nav-item">
+                      <a class="nav-link <?= $title == 'Dosen' ? 'active' : '' ?>" href="<?= base_url('admin/user/dosen') ?>" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Dosen</span>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link <?= $title == 'Mahasiswa' ? 'active' : '' ?>" href="<?= base_url('admin/user/mhs') ?>" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Mahasiswa</span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
                   <?php } ?>
                   <?php if (session()->role == 'dosen' || session()->role == 'mhs') { ?>
                   <a class="nav-link <?= $title == 'Chat' ? 'active' : '' ?>" href="<?= base_url('chat') ?>" role="button" aria-expanded="false">
