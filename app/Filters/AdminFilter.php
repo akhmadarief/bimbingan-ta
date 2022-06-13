@@ -9,8 +9,11 @@ use CodeIgniter\HTTP\ResponseInterface;
 class AdminFilter implements FilterInterface {
 
     public function before(RequestInterface $request, $arguments = null) {
-        if (session()->get('role') != 'admin') {
+        if (!session()->get('logged_in')){
             return redirect()->to(base_url('login'));
+        }
+        else if (session()->get('role') != 'admin') {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
     }
 

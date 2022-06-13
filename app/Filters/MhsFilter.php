@@ -9,8 +9,11 @@ use CodeIgniter\HTTP\ResponseInterface;
 class MhsFilter implements FilterInterface {
 
     public function before(RequestInterface $request, $arguments = null) {
-        if (session()->get('role') != 'mhs') {
+        if (!session()->get('logged_in')){
             return redirect()->to(base_url('login'));
+        }
+        else if (session()->get('role') != 'mhs') {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
     }
 
