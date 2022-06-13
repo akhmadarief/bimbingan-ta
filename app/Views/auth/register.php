@@ -38,37 +38,35 @@
                       <div class="col-auto fs--1 text-600"><span class="mb-0 fw-semi-bold">Already User?</span> <span><a href="<?= base_url('login') ?>">Login</a></span></div>
                     </div>
                     <form method="POST">
-                      <?php if (isset($validation)) { ?>
-                      <div class="alert alert-danger" role="alert" style="padding-bottom: 0"><?= $validation->listErrors() ?></div>
-                      <?php } ?>
+                      <?= session()->getFlashdata('alert') ?>
                       <div class="mb-3">
                         <label class="form-label" for="split-role">Role</label>
                         <select class="form-select" id="split-role" name="role" required>
                           <option value="">Select your role...</option>
-                          <option value="dosen">Dosen</option>
-                          <option value="mhs">Mahasiswa</option>
+                          <option value="dosen" <?= old('role') == 'dosen' ? 'selected' : '' ?>>Dosen</option>
+                          <option value="mhs" <?= old('role') == 'mhs' ? 'selected' : '' ?>>Mahasiswa</option>
                         </select>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="split-name">Name</label>
-                        <input class="form-control" type="text" autocomplete="on" id="split-name" name="name" required />
+                        <input class="form-control" type="text" autocomplete="on" id="split-name" name="name" value="<?= old('name') ?>" required />
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="nip/nim">NIP/NIM</label>
-                        <input class="form-control" type="text" autocomplete="on" id="nip/nim" name="nip/nim" required />
+                        <input class="form-control" type="text" autocomplete="on" id="nip/nim" name="nip/nim" value="<?= old('nip/nim') ?>" required />
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="split-email">Email address</label>
-                        <input class="form-control" type="email" autocomplete="on" id="split-email" name="email" required />
+                        <input class="form-control" type="email" autocomplete="on" id="split-email" name="email" value="<?= old('email') ?>" required />
                       </div>
                       <div class="row gx-2">
                         <div class="mb-3 col-sm-6">
                           <label class="form-label" for="split-password">Password</label>
-                          <input class="form-control" type="password" autocomplete="on" id="split-password" name="password" required />
+                          <input class="form-control" type="password" autocomplete="on" id="split-password" name="password" value="<?= old('password') ?>" required />
                         </div>
                         <div class="mb-3 col-sm-6">
                           <label class="form-label" for="split-confirm-password">Confirm Password</label>
-                          <input class="form-control" type="password" autocomplete="on" id="split-confirm-password" name="confirm_password" required />
+                          <input class="form-control" type="password" autocomplete="on" id="split-confirm-password" name="confirm_password" value="<?= old('confirm_password') ?>" required />
                         </div>
                       </div>
                       <div class="form-check">

@@ -216,7 +216,7 @@ class Register extends BaseController {
                 }
             }
             else {
-                $data['validation'] = $this->validator;
+                return redirect()->back()->withInput()->with('alert', '<div class="alert alert-danger" style="padding-bottom: 0" role="alert">'.$this->validator->listErrors().'</div>');
             }
         }
 
