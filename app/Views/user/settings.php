@@ -24,7 +24,6 @@
                 </div>
                 <div class="card-body bg-light">
                   <form class="row g-3" method="POST" action="<?= base_url('user/update-profile') ?>">
-                    <input name="id" type="hidden" value="<?= $user->id ?>" />
                     <div class="col-lg-12">
                       <?= session()->getFlashdata('alert_profile') ?>
                       <label class="form-label" for="name">Name</label>
@@ -53,7 +52,6 @@
                   </div>
                   <div class="card-body bg-light">
                     <form method="POST" action="<?= base_url('user/update-password') ?>">
-                      <input name="id" type="hidden" value="<?= $user->id ?>" />
                       <div class="mb-3">
                         <?= session()->getFlashdata('alert_password') ?>
                         <label class="form-label" for="old-password">Old Password</label>
