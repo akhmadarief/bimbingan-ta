@@ -20,7 +20,7 @@
         </script>
         <div class="row min-vh-100 bg-100">
           <div class="col-6 d-none d-lg-block position-relative">
-            <div class="bg-holder" style="background-image:url(../../../assets/img/generic/20.jpg);">
+            <div class="bg-holder" style="background-image:url(<?= base_url('assets/img/generic/20.jpg') ?>);">
             </div>
             <!--/.bg-holder-->
 
@@ -29,7 +29,7 @@
             <div class="row justify-content-center g-0">
               <div class="col-lg-9 col-xl-8 col-xxl-6">
                 <div class="card">
-                  <div class="card-header bg-circle-shape bg-shape text-center p-2"><a class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light" href="../../../index.html">falcon</a></div>
+                  <div class="card-header bg-circle-shape bg-shape text-center p-2"><span class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light">Undip</span></div>
                   <div class="card-body p-4">
                     <h3 class="text-center">Reset password</h3>
                     <form class="mt-3" method="POST">
