@@ -30,11 +30,11 @@ class User extends BaseController {
 
         if ($this->request->getMethod() == 'post') {
             $rules = [
-                'name'              => 'required|min_length[3]|max_length[60]',
-                'nip/nim'           => 'required|min_length[14]|max_length[20]|is_natural',
-                'email'             => 'required|min_length[6]|max_length[60]|valid_email|is_unique[user.email]',
-                'password'          => 'required|min_length[6]|max_length[60]',
-                'role'              => 'required|min_length[3]|max_length[5]',
+                'name'      => 'required|min_length[3]|max_length[60]',
+                'nip/nim'   => 'required|min_length[14]|max_length[20]|is_natural',
+                'email'     => 'required|min_length[6]|max_length[60]|valid_email|is_unique[user.email]',
+                'password'  => 'required|min_length[6]|max_length[60]',
+                'role'      => 'required|min_length[3]|max_length[5]',
             ];
 
             if ($this->validate($rules)) {
@@ -65,7 +65,7 @@ class User extends BaseController {
                 return redirect()->to(base_url('admin/user/'.$role))->with('toastr', 'toastr.success("Berhasil menambah '.$role.' baru")');
             }
             else {
-                return redirect()->to(base_url('admin/user/'.$role))->with('toastr', 'toastr.success("'.$this->validator->listErrors().'")');
+                return redirect()->back()->withInput()->with('alert_add_user', '<div class="alert alert-danger" style="padding-bottom: 0" role="alert">'.$this->validator->listErrors().'</div>');
             }
         }
     }

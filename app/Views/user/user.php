@@ -18,7 +18,7 @@
                     <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="City">
                   </div>
                   <div class="col-sm-auto">
-                    <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#new"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
+                    <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#add"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
                   </div>
                 </div>
                 <div class="table-responsive scrollbar">
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="modal fade" id="new" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
               <div class="modal-content position-relative">
                 <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
@@ -64,29 +64,30 @@
                   </div>
                   <div class="p-4 pb-0">
                     <form method="POST" action="<?= base_url('admin/user/add') ?>">
+                      <?= session()->getFlashdata('alert_add_user') ?>
                       <div class="mb-3">
                         <label class="col-form-label" for="role">Role:</label>
                         <select class="form-select" aria-label="role" name="role" required>
                           <option value="">Select role...</option>
-                          <option value="dosen">Dosen</option>
-                          <option value="mhs">Mahasiswa</option>
+                          <option value="dosen" <?= old('role') == 'dosen' ? 'selected' : '' ?>>Dosen</option>
+                          <option value="mhs" <?= old('role') == 'mhs' ? 'selected' : '' ?>>Mahasiswa</option>
                         </select>
                       </div>
                       <div class="mb-3">
                         <label class="col-form-label" for="name">Name:</label>
-                        <input class="form-control" type="text" id="name" name="name" required />
+                        <input class="form-control" type="text" id="name" name="name" value="<?= old('name') ?>" required />
                       </div>
                       <div class="mb-3">
                         <label class="col-form-label" for="nip/nim">NIP/NIM:</label>
-                        <input class="form-control" type="text" id="nip/nim" name="nip/nim" required />
+                        <input class="form-control" type="text" id="nip/nim" name="nip/nim" value="<?= old('nip/nim') ?>" required />
                       </div>
                       <div class="mb-3">
                         <label class="col-form-label" for="email">Email address:</label>
-                        <input class="form-control" type="email" id="email" name="email" required />
+                        <input class="form-control" type="email" id="email" name="email" value="<?= old('email') ?>" required />
                       </div>
                       <div class="mb-3">
                         <label class="col-form-label" for="password">Password:</label>
-                        <input class="form-control" type="password" id="password" name="password" required />
+                        <input class="form-control" type="password" id="password" name="password" value="<?= old('password') ?>" required />
                       </div>
                       <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
