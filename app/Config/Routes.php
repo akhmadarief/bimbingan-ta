@@ -55,6 +55,8 @@ $routes->group('register', function($routes) {
 
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth_filter']);
 
+$routes->get('chat', 'Chat::index', ['filter' => 'auth_filter']);
+
 $routes->group('admin/user', ['filter' => 'admin_filter'], function($routes) {
     $routes->get('dosen', 'Admin\User::dosen');
     $routes->get('mhs', 'Admin\User::mhs');
@@ -77,6 +79,12 @@ $routes->group('mhs/bimbingan', ['filter' => 'mhs_filter'], function($routes) {
     $routes->get('on-progress', 'Mhs\Bimbingan::on_progress');
     $routes->get('completed', 'Mhs\Bimbingan::completed');
     $routes->post('new', 'Mhs\Bimbingan::new');
+});
+
+$routes->group('user', ['filter' => 'auth_filter'], function($routes) {
+    $routes->get('settings', 'User::settings');
+    $routes->post('update-profile', 'User::update_profile');
+    $routes->post('update-password', 'User::update_password');
 });
 
 /*
