@@ -7,7 +7,7 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
+if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
     require SYSTEMPATH . 'Config/Routes.php';
 }
 
@@ -19,9 +19,13 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
-$routes->setTranslateURIDashes(true);
+$routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+// The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
+// where controller filters or CSRF protection are bypassed.
+// If you don't want to define all routes, please use the Auto Routing (Improved).
+// Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
+//$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -33,8 +37,6 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth_filter']);
-
 $routes->group('/', function($routes) {
     $routes->get('login', 'Auth::login');
     $routes->post('login', 'Auth::login');
@@ -44,6 +46,14 @@ $routes->group('/', function($routes) {
     $routes->post('reset-password/(:hash)', 'Auth::reset_password/$1');
     $routes->get('logout', 'Auth::logout');
 });
+
+$routes->group('register', function($routes) {
+    $routes->get('/', 'Register::index');
+    $routes->post('/', 'Register::index');
+    $routes->get('verify/(:hash)', 'Register::verify/$1');
+});
+
+$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth_filter']);
 
 $routes->group('admin/user', ['filter' => 'admin_filter'], function($routes) {
     $routes->get('dosen', 'Admin\User::dosen');
@@ -82,6 +92,6 @@ $routes->group('mhs/bimbingan', ['filter' => 'mhs_filter'], function($routes) {
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
+if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
