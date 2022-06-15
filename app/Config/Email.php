@@ -26,7 +26,7 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $userAgent = 'Test';
+    public $userAgent = 'Bimbingan App';
 
     /**
      * The mail sending protocol: mail, sendmail, smtp
@@ -54,14 +54,14 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPUser = '4d40846f3f320d';
+    public $SMTPUser = 'f2f1d84e629c16';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '9d6e2187cc81ae';
+    public $SMTPPass = '669ec7288ddb67';
 
     /**
      * SMTP Port
