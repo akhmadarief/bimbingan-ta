@@ -36,7 +36,7 @@ class Auth extends BaseController {
                 return redirect()->to(base_url('dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
             }
             else {
-                return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-danger" role="alert">Login failed. Please check email and password then try again.</div>');
+                return redirect()->back()->with('alert', '<div class="alert alert-danger" role="alert">Login failed. Please check email and password then try again.</div>');
             }
         }
 
@@ -235,9 +235,15 @@ class Auth extends BaseController {
 
     public function reset_password($token = NULL) {
 
-        $user_token = $this->token_model->where(['token' => $token, 'type' => 1])->first();
+        $token_data = [
+            'token'         => $token,
+            'type'          => 1,
+            'expired_at >'  => date('Y-m-d H:i:s')
+        ];
 
-        if ($user_token && $user_token->expired_at > date('Y-m-d H:i:s')) {
+        $user_token = $this->token_model->where($token_data)->first();
+
+        if ($user_token) {
 
             if ($this->request->getMethod() == 'post') {
                 $rules = [
@@ -246,9 +252,9 @@ class Auth extends BaseController {
                 ];
 
                 if ($this->validate($rules)) {
-                    $password = $this->request->getPost('password');
+                    $this->user_model->where(['email' => $user_token->user_email])->set(['password' => $this->request->getPost('password'), 'email_verified' => 1])->update();
 
-                    $this->user_model->where(['email' => $user_token->user_email])->set(['password' => password_hash($password, PASSWORD_BCRYPT), 'email_verified' => 1])->update();
+                    $this->token_model->where($token_data)->set(['expired_at' => date('Y-m-d H:i:s')])->update();
 
                     session()->remove(['id', 'name', 'email', 'logged_in']);
                     return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your password is successfully reset.<br>Please login again.</div>');
@@ -261,15 +267,8 @@ class Auth extends BaseController {
             $data['title'] = 'Reset Password';
             return view('auth/reset_password', $data);
         }
-        else if ($user_token && $user_token->expired_at < date('Y-m-d H:i:s')) {
-            echo 'Expired';
-            echo '<br>';
-            echo '<a href="'.base_url('login').'">Login</a>';
-        }
         else {
-            echo 'Error';
-            echo '<br>';
-            echo '<a href="'.base_url('login').'">Login</a>';
+            return redirect()->to(base_url('forgot-password'))->with('alert', '<div class="alert alert-danger" role="alert">The link you followed has expired or not valid.</div>');
         }
     }
 

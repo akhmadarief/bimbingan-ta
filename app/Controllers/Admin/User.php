@@ -51,7 +51,7 @@ class User extends BaseController {
                     'nip_nim'           => $nip_nim,
                     'email'             => $user_email,
                     'email_verified'    => 1,
-                    'password'          => password_hash($password, PASSWORD_BCRYPT),
+                    'password'          => $password,
                     'role'              => $role
                 ]);
 

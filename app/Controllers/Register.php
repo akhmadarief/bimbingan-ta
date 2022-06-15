@@ -37,7 +37,7 @@ class Register extends BaseController {
                     'name'      => $name,
                     'nip_nim'   => $nip_nim,
                     'email'     => $user_email,
-                    'password'  => password_hash($password, PASSWORD_BCRYPT),
+                    'password'  => $password,
                     'role'      => $role
                 ]);
 
@@ -226,24 +226,25 @@ class Register extends BaseController {
 
     public function verify($token = NULL) {
 
-        $user_token = $this->token_model->where(['token' => $token, 'type' => 0])->first();
+        $token_data = [
+            'token'         => $token,
+            'type'          => 0,
+            'expired_at >'  => date('Y-m-d H:i:s')
+        ];
 
-        if ($user_token && $user_token->expired_at > date('Y-m-d H:i:s')) {
+        $user_token = $this->token_model->where($token_data)->first();
+
+        if ($user_token) {
 
             $this->user_model->where(['email' => $user_token->user_email])->set(['email_verified' => 1])->update();
+
+            $this->token_model->where($token_data)->set(['expired_at' => date('Y-m-d H:i:s')])->update();
 
             session()->remove(['id', 'name', 'email', 'logged_in']);
             return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your Email Address is successfully verified.<br>Please login to access your account.</div>');
         }
-        else if ($user_token && $user_token->expired_at < date('Y-m-d H:i:s')) {
-            echo 'Expired.';
-            echo '<br>';
-            echo '<a href="'.base_url('login').'">Login</a>';
-        }
         else {
-            echo 'Sorry, there is error verifying your Email Address.';
-            echo '<br>';
-            echo '<a href="'.base_url('login').'">Login</a>';
+            return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-danger" role="alert">The link you followed has expired or not valid.</div>');
         }
     }
 }

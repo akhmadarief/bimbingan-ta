@@ -56,7 +56,7 @@ class User extends BaseController {
                 $user = $this->user_model->find($id);
 
                 if ($user && password_verify($old_password, $user->password)) {
-                    $this->user_model->save(['id' => $id, 'password' => password_hash($new_password, PASSWORD_BCRYPT)]);
+                    $this->user_model->save(['id' => $id, 'password' => $new_password]);
                     session()->setFlashdata('toastr', 'toastr.success("Berhasil mengubah password")');
                 }
                 else {
