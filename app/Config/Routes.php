@@ -53,6 +53,12 @@ $routes->group('register', function($routes) {
     $routes->get('verify/(:hash)', 'Register::verify/$1');
 });
 
+$routes->group('google', function($routes) {
+    $routes->get('auth', 'Google::auth');
+    $routes->get('register', 'Google::register');
+    $routes->post('register', 'Google::register');
+});
+
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth_filter']);
 
 $routes->get('chat', 'Chat::index', ['filter' => 'auth_filter']);

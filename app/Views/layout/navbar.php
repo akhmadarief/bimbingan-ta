@@ -15,7 +15,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div>
-                    <img class="rounded-circle" src="<?= base_url('assets/img/team/avatar.png') ?>" width="32" alt="" /> <?= session('name') ?>
+                    <img class="rounded-circle" src="<?= session('picture') ?? base_url('assets/img/team/avatar.png') ?>" width="32" alt="" /> <?= session('name') ?>
                   </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
