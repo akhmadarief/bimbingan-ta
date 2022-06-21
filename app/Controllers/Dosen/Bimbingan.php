@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\Dosen;
+
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\BimbinganModel;
@@ -16,21 +17,21 @@ class Bimbingan extends BaseController {
         $data['title']      = 'Pengajuan Bimbingan';
         $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan('id_dosen='.session('id').' AND (status=0 OR status=3)')->getResult();
 
-        return view('bimbingan', $data);
+        return view('bimbingan/bimbingan_list', $data);
     }
 
     public function on_progress() {
         $data['title']      = 'Bimbingan Berjalan';
         $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan(['id_dosen' => session('id'), 'status' => 1])->getResult();
 
-        return view('bimbingan', $data);
+        return view('bimbingan/bimbingan_list', $data);
     }
 
     public function completed() {
         $data['title']      = 'Bimbingan Selesai';
         $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan(['id_dosen' => session('id'), 'status' => 2])->getResult();
 
-        return view('bimbingan', $data);
+        return view('bimbingan/bimbingan_list', $data);
     }
 
     public function approve($id = NULL) {

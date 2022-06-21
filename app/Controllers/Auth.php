@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
 use App\Models\TokenModel;
 
@@ -33,7 +34,7 @@ class Auth extends BaseController {
                     'role'      => $user->role,
                     'logged_in' => true
                 ]);
-                return redirect()->to(base_url('dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
+                return redirect()->to(base_url(session('role').'/dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
             }
             else {
                 return redirect()->back()->with('alert', '<div class="alert alert-danger" role="alert">Login failed. Please check email and password then try again.</div>');

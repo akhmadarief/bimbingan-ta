@@ -35,7 +35,7 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Home::index', ['filter' => 'auth_filter']);
 
 $routes->group('/', function($routes) {
     $routes->get('login', 'Auth::login');
@@ -59,32 +59,39 @@ $routes->group('google', function($routes) {
     $routes->post('register', 'Google::register');
 });
 
-$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth_filter']);
-
 $routes->get('chat', 'Chat::index', ['filter' => 'auth_filter']);
 
-$routes->group('admin/user', ['filter' => 'admin_filter'], function($routes) {
-    $routes->get('dosen', 'Admin\User::dosen');
-    $routes->get('mhs', 'Admin\User::mhs');
-    $routes->post('add', 'Admin\User::add');
+$routes->group('admin', ['filter' => 'admin_filter'], function($routes) {
+    $routes->get('dashboard', 'Admin\Dashboard::index');
+    $routes->group('user', static function ($routes) {
+        $routes->get('dosen', 'Admin\User::dosen');
+        $routes->get('mhs', 'Admin\User::mhs');
+        $routes->post('add', 'Admin\User::add');
+    });
 });
 
-$routes->group('dosen/bimbingan', ['filter' => 'dosen_filter'], function($routes) {
-    $routes->get('submission', 'Dosen\Bimbingan::submission');
-    $routes->get('on-progress', 'Dosen\Bimbingan::on_progress');
-    $routes->get('completed', 'Dosen\Bimbingan::completed');
-    $routes->get('approve/(:num)', 'Dosen\Bimbingan::approve/$1');
-    $routes->get('cancel-approve/(:num)', 'Dosen\Bimbingan::cancel_approve/$1');
-    $routes->get('reject/(:num)', 'Dosen\Bimbingan::reject/$1');
-    $routes->get('mark-as-completed/(:num)', 'Dosen\Bimbingan::mark_as_completed/$1');
-    $routes->get('mark-as-on-progress/(:num)', 'Dosen\Bimbingan::mark_as_on_progress/$1');
+$routes->group('dosen', ['filter' => 'dosen_filter'], function($routes) {
+    $routes->get('dashboard', 'Dosen\Dashboard::index');
+    $routes->group('bimbingan', static function ($routes) {
+        $routes->get('submission', 'Dosen\Bimbingan::submission');
+        $routes->get('on-progress', 'Dosen\Bimbingan::on_progress');
+        $routes->get('completed', 'Dosen\Bimbingan::completed');
+        $routes->get('approve/(:num)', 'Dosen\Bimbingan::approve/$1');
+        $routes->get('cancel-approve/(:num)', 'Dosen\Bimbingan::cancel_approve/$1');
+        $routes->get('reject/(:num)', 'Dosen\Bimbingan::reject/$1');
+        $routes->get('mark-as-completed/(:num)', 'Dosen\Bimbingan::mark_as_completed/$1');
+        $routes->get('mark-as-on-progress/(:num)', 'Dosen\Bimbingan::mark_as_on_progress/$1');
+    });
 });
 
-$routes->group('mhs/bimbingan', ['filter' => 'mhs_filter'], function($routes) {
-    $routes->get('submission', 'Mhs\Bimbingan::submission');
-    $routes->get('on-progress', 'Mhs\Bimbingan::on_progress');
-    $routes->get('completed', 'Mhs\Bimbingan::completed');
-    $routes->post('new', 'Mhs\Bimbingan::new');
+$routes->group('mhs', ['filter' => 'mhs_filter'], function($routes) {
+    $routes->get('dashboard', 'Mhs\Dashboard::index');
+    $routes->group('bimbingan', static function ($routes) {
+        $routes->get('submission', 'Mhs\Bimbingan::submission');
+        $routes->get('on-progress', 'Mhs\Bimbingan::on_progress');
+        $routes->get('completed', 'Mhs\Bimbingan::completed');
+        $routes->post('add', 'Mhs\Bimbingan::add');
+    });
 });
 
 $routes->group('user', ['filter' => 'auth_filter'], function($routes) {

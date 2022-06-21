@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\Mhs;
+
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\BimbinganModel;
@@ -17,7 +18,7 @@ class Bimbingan extends BaseController {
         $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan('id_mhs='.session('id').' AND (status=0 OR status=3)')->getResult();
         $data['dosen']  = $this->user_model->where(['role' => 'dosen'])->findAll();
 
-        return view('bimbingan', $data);
+        return view('bimbingan/bimbingan_list', $data);
     }
 
     public function on_progress() {
@@ -25,7 +26,7 @@ class Bimbingan extends BaseController {
         $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan(['id_mhs' => session('id'), 'status' => 1])->getResult();
         $data['dosen']  = $this->user_model->where(['role' => 'dosen'])->findAll();
 
-        return view('bimbingan', $data);
+        return view('bimbingan/bimbingan_list', $data);
     }
 
     public function completed() {
@@ -33,10 +34,10 @@ class Bimbingan extends BaseController {
         $data['bimbingan']  = $this->bimbingan_model->detail_bimbingan(['id_mhs' => session('id'), 'status' => 2])->getResult();
         $data['dosen']  = $this->user_model->where(['role' => 'dosen'])->findAll();
 
-        return view('bimbingan', $data);
+        return view('bimbingan/bimbingan_list', $data);
     }
 
-    public function new() {
+    public function add() {
 
         $dosen  = $this->request->getPost('dosen');
         $jenis  = $this->request->getPost('jenis');

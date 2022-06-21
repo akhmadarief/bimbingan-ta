@@ -20,4 +20,11 @@ class BimbinganModel extends Model {
         $query = $builder->get();
         return $query;
     }
+
+    public function count_bimbingan($where = 1) {
+        $builder = $this->db->table('bimbingan');
+        $builder->where($where);
+        $count = $builder->countAllResults();
+        return $count;
+    }
 }

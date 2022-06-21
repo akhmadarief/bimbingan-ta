@@ -18,7 +18,7 @@ class Google extends BaseController {
     public function auth() {
 
         if (session('logged_in')){
-            return redirect()->to(base_url('dashboard'));
+            return redirect()->to(base_url(session('role').'/dashboard'));
         }
 
         $client_id      = '714503460771-6f8jc6f703oi5idra9hk46plcc1tb716.apps.googleusercontent.com';
@@ -82,7 +82,7 @@ class Google extends BaseController {
                         'logged_in' => true
                     ]);
 
-                    return redirect()->to(base_url('dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
+                    return redirect()->to(base_url(session('role').'/dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
                 }
             }
         }
@@ -130,7 +130,7 @@ class Google extends BaseController {
                     'logged_in' => true
                 ]);
 
-                return redirect()->to(base_url('dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
+                return redirect()->to(base_url(session('role').'/dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
             }
             else {
                 return redirect()->back()->withInput()->with('alert', '<div class="alert alert-danger" style="padding-bottom: 0" role="alert">'.$this->validator->listErrors().'</div>');

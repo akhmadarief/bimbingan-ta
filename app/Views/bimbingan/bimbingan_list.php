@@ -2,62 +2,50 @@
 
 <?= $this->section('content') ?>
 
-          <div class="card">
-            <div class="card-header">
-              <div class="row flex-between-end">
-                <div class="col-auto align-self-center">
-                  <h5 class="mb-0" data-anchor="data-anchor"><?= $title ?></h5>
-                  <p class="mb-0 mt-2 mb-0">Add <code> pagination </code> class for enable number pagination. The following structure will enable number pagination with next and previous button.</p>
-                </div>
-              </div>
+          <div class="card mb-3 mb-lg-0">
+            <div class="card-header bg-light d-flex justify-content-between">
+              <h5 class="mb-0"><?= $title ?></h5>
+              <!-- <form>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                  <option selected="selected">Select Category</option>
+                  <option>Health &amp; Wellness</option>
+                  <option>Business &amp; Professional</option>
+                  <option>Performing &amp; Visual Arts</option>
+                  <option>Science &amp; Technology</option>
+                  <option>Sports &amp; Fitness</option>
+                  <option>Charity &amp; Causes</option>
+                  <option>Film &amp; Media</option>
+                  <option>Fashion &amp; Beauty</option>
+                  <option>Travel &amp; Outdoor</option>
+                  <option>Entertainment</option>
+                  <option>Other</option>
+                </select>
+              </form> -->
             </div>
-            <div class="card-body pt-0">
-              <div id="tableBimbingan" data-list='{"valueNames":["name","jenis","topik","created_at","status"],"page":5,"pagination":true}'>
-                <div class="row g-2 justify-content-end mb-3">
-                  <div class="col-sm-2">
-                    <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="City">
-                  </div>
-                  <?php if (session('role') == 'mhs') { ?>
-                  <div class="col-sm-auto">
-                    <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#new"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
-                  </div>
-                  <?php } ?>
-                </div>
-                <div class="table-responsive scrollbar">
-                  <table class="table table-bordered table-striped fs--1 mb-0">
-                    <thead class="bg-200 text-900">
-                      <tr>
-                        <th class="no-sort text-center">No.</th> 
-                        <th class="sort text-center" data-sort="name"><?= session('role') == 'mhs' ? 'Dosen' : 'Mahasiswa' ?></th>
-                        <th class="sort text-center" data-sort="jenis">Jenis</th>
-                        <th class="sort text-center" data-sort="topik">Topik</th>
-                        <th class="sort text-center" data-sort="created_at">Tanggal</th>
-                        <th class="sort text-center" data-sort="status">Status</th>
-                        <th class="no-sort text-center">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody class="list">
-                      <?php $no = 1; foreach ($bimbingan as $bimbingan) { ?>
-                      <tr>
-                        <td class="text-center"><?= $no++ ?></td>
-                        <td class="name"><?= session('role') == 'mhs' ? $bimbingan->dosen : $bimbingan->mhs ?><br><?= session('role') == 'mhs' ? $bimbingan->nip : $bimbingan->nim ?></td>
-                        <td class="jenis text-center"><?= $bimbingan->jenis == 1 ? 'Tugas Akhir' : ($bimbingan->jenis == 2 ? 'Kerja Praktik' : ($bimbingan->jenis == 3 ? 'Perlombaan' : ($bimbingan->jenis == 4 ? 'Penelitian' : ($bimbingan->jenis == 5 ? 'Perwalian' : 'Lainnya')))) ?></td>
-                        <td class="topik"><?= $bimbingan->topik ?></td>
-                        <td class="created_at text-center"><?= $bimbingan->created_at ?></td>
-                        <td class="status text-center">
-                        <?php if ($bimbingan->status == 0) { ?>
-                          <span class="badge badge rounded-pill d-block p-2 badge-soft-warning">Pending<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
-                        <?php } else if ($bimbingan->status == 1) { ?>
-                          <span class="badge badge rounded-pill d-block p-2 badge-soft-primary">On Progress<span class="ms-1 fas fa-sync" data-fa-transform="shrink-2"></span></span>
-                        <?php } else if ($bimbingan->status == 2) { ?>
-                          <span class="badge badge rounded-pill d-block p-2 badge-soft-success">Completed<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
-                        <?php } else { ?>
-                          <span class="badge badge rounded-pill d-block p-2 badge-soft-danger">Rejected<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
-                        <?php } ?>
-                        </td>
-                        <td class="text-center">
+            <div class="card-body fs--1">
+              <div class="row">
+                <?= $bimbingan ? '' : '<p class="mb-0 fs--1">Tidak ada data</p>' ?>
+                <?php foreach ($bimbingan as $bimbingan) { ?>
+                <div class="col-md-6 h-100">
+                  <div class="d-flex btn-reveal-trigger">
+                    <div class="calendar"><span class="calendar-month"><?= date('M',strtotime($bimbingan->created_at)) ?></span><span class="calendar-day"><?= date('d',strtotime($bimbingan->created_at)) ?></span></div>
+                    <div class="flex-1 position-relative ps-3">
+                      <div class="row">
+                        <div class="col">
+                          <h6 class="fs-0 mb-0">
+                            <a href="#"><?= $bimbingan->topik ?> 
+                            <?php if ($bimbingan->status == 0) { ?>
+                              <span class="badge rounded-pill badge-soft-warning">Pending</span>
+                            <?php } else if ($bimbingan->status == 3) { ?>
+                              <span class="badge rounded-pill badge-soft-danger">Rejected</span>
+                            <?php } ?>
+                            </a>
+                          </h6>
+                          <p class="mb-1"><?= $bimbingan->jenis == 1 ? 'Tugas Akhir' : ($bimbingan->jenis == 2 ? 'Kerja Praktik' : ($bimbingan->jenis == 3 ? 'Perlombaan' : ($bimbingan->jenis == 4 ? 'Penelitian' : ($bimbingan->jenis == 5 ? 'Perwalian' : 'Lainnya')))) ?></a></p>
+                        </div>
+                        <div class="col-auto">
                           <div class="dropdown font-sans-serif position-static">
-                            <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                            <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-label="Actions" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
                             <div class="dropdown-menu dropdown-menu-end border py-0">
                               <div class="bg-white py-2">
                               <?php if ($title == 'Pengajuan Bimbingan' && session('role') == 'dosen') { ?>
@@ -80,21 +68,19 @@
                               </div>
                             </div>
                           </div>
-                        </td>
-                      </tr>
-                      <?php } ?>
-                    </tbody>
-                  </table>
+                        </div>
+                      </div>
+                      <p class="text-1000 mb-0">Mahasiswa: <?= $bimbingan->mhs.' - '.$bimbingan->nim ?></p>
+                      <p class="text-1000 mb-0">Dosen: <?= $bimbingan->dosen.' - '.$bimbingan->nip ?></p>
+                      <p class="text-1000 mb-0">Tanggal: <?= date('d M Y',strtotime($bimbingan->created_at)) ?></p>
+                      <div class="border-dashed-bottom my-3"></div>
+                    </div>
+                  </div>
                 </div>
-                <div class="d-flex justify-content-center mt-3">
-                  <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-                  <ul class="pagination mb-0"></ul>
-                  <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right"> </span></button>
-                </div>
+                <?php } ?>
               </div>
             </div>
           </div>
-
           <?php if (session('role') == 'mhs') { ?>
           <div class="modal fade" id="new" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">

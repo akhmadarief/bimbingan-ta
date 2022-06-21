@@ -23,6 +23,7 @@
 
         <div class="content">
           <?= $this->include('layout/navbar') ?>
+          <?= $this->include('layout/breadcumb') ?>
           <?= $this->renderSection('content') ?>
           <?= $this->include('layout/footer') ?>
         </div>
