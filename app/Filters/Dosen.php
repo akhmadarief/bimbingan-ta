@@ -6,10 +6,10 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class DosenFilter implements FilterInterface {
+class Dosen implements FilterInterface {
 
     public function before(RequestInterface $request, $arguments = null) {
-        if (!session()->get('logged_in')){
+        if (!session()->get('logged_in')) {
             return redirect()->to(base_url('login'));
         }
         else if (session()->get('role') != 'dosen') {

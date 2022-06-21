@@ -14,10 +14,6 @@ class Auth extends BaseController {
 
     public function login() {
 
-        if (session()->get('logged_in')) {
-            return redirect()->to(base_url('dashboard'));
-        }
-
         if ($this->request->getMethod() == 'post') {
             $email      = $this->request->getPost('email');
             $password   = $this->request->getPost('password');
@@ -257,7 +253,6 @@ class Auth extends BaseController {
 
                     $this->token_model->where($token_data)->set(['expired_at' => date('Y-m-d H:i:s')])->update();
 
-                    session()->remove(['id', 'name', 'email', 'logged_in']);
                     return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your password is successfully reset.<br>Please login again.</div>');
                 }
                 else {

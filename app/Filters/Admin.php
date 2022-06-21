@@ -6,13 +6,13 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class MhsFilter implements FilterInterface {
+class Admin implements FilterInterface {
 
     public function before(RequestInterface $request, $arguments = null) {
-        if (!session()->get('logged_in')){
+        if (!session()->get('logged_in')) {
             return redirect()->to(base_url('login'));
         }
-        else if (session()->get('role') != 'mhs') {
+        else if (session()->get('role') != 'admin') {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\TokenModel;
 use Google\Client;
@@ -16,10 +15,6 @@ class Google extends BaseController {
     }
 
     public function auth() {
-
-        if (session('logged_in')){
-            return redirect()->to(base_url(session('role').'/dashboard'));
-        }
 
         $client_id      = '714503460771-6f8jc6f703oi5idra9hk46plcc1tb716.apps.googleusercontent.com';
         $client_secret  = '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';
