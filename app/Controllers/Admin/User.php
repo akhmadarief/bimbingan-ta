@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\Admin;
+
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\TokenModel;
@@ -53,13 +54,6 @@ class User extends BaseController {
                     'email_verified'    => 1,
                     'password'          => $password,
                     'role'              => $role
-                ]);
-
-                $this->token_model->insert([
-                    'user_email'    => $user_email,
-                    'type'          => 0,
-                    'token'         => $token,
-                    'expired_at'    => $expired_at
                 ]);
 
                 return redirect()->to(base_url('admin/user/'.$role))->with('toastr', 'toastr.success("Berhasil menambah '.$role.' baru")');

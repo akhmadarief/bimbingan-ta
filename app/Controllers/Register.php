@@ -43,7 +43,7 @@ class Register extends BaseController {
                 ]);
 
                 $this->token_model->insert([
-                    'user_email'    => $user_email,
+                    'email'         => $user_email,
                     'type'          => 0,
                     'token'         => $token,
                     'expired_at'    => $expired_at
@@ -233,13 +233,13 @@ class Register extends BaseController {
             'expired_at >'  => date('Y-m-d H:i:s')
         ];
 
-        $user_token = $this->token_model->where($token_data)->first();
+        $valid_token = $this->token_model->where($token_data)->first();
 
         if ($user_token) {
 
-            $this->user_model->where(['email' => $user_token->user_email])->set(['email_verified' => 1])->update();
+            $this->user_model->where(['email' => $valid_token->email])->set(['email_verified' => 1])->update();
 
-            $this->token_model->where($token_data)->set(['expired_at' => date('Y-m-d H:i:s')])->update();
+            $this->token_model->delete($valid_token->email);
 
             return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your Email Address is successfully verified.<br>Please login to access your account.</div>');
         }

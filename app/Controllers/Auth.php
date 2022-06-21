@@ -45,14 +45,27 @@ class Auth extends BaseController {
 
         if ($this->request->getMethod() == 'post') {
 
-            $user_email = $this->request->getPost('email');
-            $user = $this->user_model->where(['email' => $user_email])->first();
+            $user = $this->user_model->where(['email' => $this->request->getPost('email')])->first();
 
             if ($user) {
-                $token      = md5($user_email.rand());
+                $token      = md5($user->email.rand());
                 $expired_at = date('Y-m-d H:i:s', strtotime('1 hour'));
 
-                $this->token_model->where(['user_email' => $user_email])->set(['type' => 1,'token' => $token, 'expired_at' => $expired_at])->update();
+                $token_data = [
+                    'email'         => $user->email,
+                    'type'          => 1,
+                    'token'         => $token,
+                    'expired_at'    => $expired_at
+                ];
+
+                $token_exist = $this->token_model->find($user->email);
+
+                if ($token_exist) {
+                    $this->token_model->save($token_data);
+                }
+                else {
+                    $this->token_model->insert($token_data);
+                }
 
                 $url = base_url('reset-password/'.$token);
                 $email_msg = <<<HTML
@@ -206,14 +219,15 @@ class Auth extends BaseController {
 
                 $email = \Config\Services::email();
 
-                $email->setTo($user_email);
+                $email->setTo($user->email);
                 $email->setSubject('Konfirmasi Reset Password');
                 $email->setMessage($email_msg);
 
                 if ($email->send()) {
                     $data['title'] = 'Confirm Mail';
-                    $data['email'] = $user_email;
+                    $data['email'] = $user->email;
                     $data['msg'] = 'Please click on the included link to reset your password.';
+
                     return view('auth/confirm_mail', $data);
                 }
                 else {
@@ -238,9 +252,9 @@ class Auth extends BaseController {
             'expired_at >'  => date('Y-m-d H:i:s')
         ];
 
-        $user_token = $this->token_model->where($token_data)->first();
+        $valid_token = $this->token_model->where($token_data)->first();
 
-        if ($user_token) {
+        if ($valid_token) {
 
             if ($this->request->getMethod() == 'post') {
                 $rules = [
@@ -249,9 +263,9 @@ class Auth extends BaseController {
                 ];
 
                 if ($this->validate($rules)) {
-                    $this->user_model->where(['email' => $user_token->user_email])->set(['password' => $this->request->getPost('password'), 'email_verified' => 1])->update();
+                    $this->user_model->where(['email' => $valid_token->email])->set(['password' => $this->request->getPost('password'), 'email_verified' => 1])->update();
 
-                    $this->token_model->where($token_data)->set(['expired_at' => date('Y-m-d H:i:s')])->update();
+                    $this->token_model->delete($valid_token->email);
 
                     return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your password is successfully reset.<br>Please login again.</div>');
                 }

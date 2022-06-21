@@ -51,13 +51,6 @@ class Google extends BaseController {
                         'role'      => $google_user->hd == 'student.ce.undip.ac.id' ? 'mhs' : 'dosen',
                     ]);
 
-                    $this->token_model->insert([
-                        'user_email'    => $google_user->email,
-                        'type'          => 0,
-                        'token'         => md5($google_user->email.rand()),
-                        'expired_at'    => date('Y-m-d H:i:s')
-                    ]);
-
                     return redirect()->to(base_url('google/register'))->with('alert', '<div class="alert alert-warning" role="alert">Please complete your profile.</div>');
                 }
 

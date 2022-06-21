@@ -5,6 +5,7 @@ use CodeIgniter\Model;
 
 class TokenModel extends Model {
     protected $table            = 'user_token';
+    protected $primaryKey       = 'email';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['id', 'user_email', 'type', 'token', 'expired_at'];
+    protected $allowedFields    = ['email', 'type', 'token', 'expired_at'];
 }
