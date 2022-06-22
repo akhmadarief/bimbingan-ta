@@ -1,4 +1,4 @@
-<?php if (!empty(session()->getFlashdata('alert_add_user'))) { ?>
+    <?php if (!empty(session()->getFlashdata('alert_add_user'))) { ?>
     <script type="text/javascript">
       $(window).on("load", function() {
         $("#addModal").modal("show");
