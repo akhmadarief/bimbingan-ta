@@ -66,6 +66,8 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
         $routes->get('dosen', 'Admin\User::dosen');
         $routes->get('mhs', 'Admin\User::mhs');
         $routes->post('add', 'Admin\User::add');
+        $routes->post('edit', 'Admin\User::edit');
+        $routes->get('delete/(:num)', 'Admin\User::delete/$1');
     });
 });
 

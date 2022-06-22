@@ -38,6 +38,8 @@
     <!-- ===============================================-->
     <?= $this->include('layout/js') ?>
 
+    <?= $title == 'Dosen' || $title == 'Mahasiswa' ? $this->include('user/js') : '' ?>
+
   </body>
 
 </html>

@@ -19,11 +19,3 @@
       });
     </script>
     <?php } ?>
-
-    <?php if (!empty(session()->getFlashdata('alert_add_user'))) { ?>
-    <script type="text/javascript">
-      $(window).on('load', function() {
-        $('#add').modal('show');
-      });
-    </script>
-    <?php } ?>
