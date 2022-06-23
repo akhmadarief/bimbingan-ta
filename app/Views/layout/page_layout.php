@@ -38,7 +38,7 @@
     <!-- ===============================================-->
     <?= $this->include('layout/js') ?>
 
-    <?= $title == 'Dosen' || $title == 'Mahasiswa' ? $this->include('user/js') : '' ?>
+    <?= $title == 'Dosen' || $title == 'Mahasiswa' ? $this->include('user/user_js') : '' ?>
 
   </body>
 
