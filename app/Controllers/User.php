@@ -31,8 +31,10 @@ class User extends BaseController {
             session()->setFlashdata('toastr', 'toastr.success("Berhasil memperbarui profil")');
         }
         else {
-            session()->setFlashdata('alert_profile', '<div class="alert alert-danger" style="padding-bottom: 0" role="alert">'.$this->validator->listErrors().'</div>');
+            session()->setFlashdata('alert_profile', '<div class="alert alert-danger pb-0" role="alert">'.$this->validator->listErrors().'</div>');
         }
+
+        return redirect()->back();
     }
 
     public function update_password() {
@@ -57,7 +59,9 @@ class User extends BaseController {
             }
         }
         else {
-            session()->setFlashdata('alert_password', '<div class="alert alert-danger" style="padding-bottom: 0" role="alert">'.$this->validator->listErrors().'</div>');
+            session()->setFlashdata('alert_password', '<div class="alert alert-danger pb-0" role="alert">'.$this->validator->listErrors().'</div>');
         }
+
+        return redirect()->back();
     }
 }
