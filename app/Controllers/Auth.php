@@ -45,7 +45,7 @@ class Auth extends BaseController {
 
         if ($this->request->getMethod() == 'post') {
 
-            $user = $this->user_model->where(['email' => $this->request->getPost('email')])->first();
+            $user = $this->user_model->where(['email' => $this->request->getPost('email'), 'email_verified' => 1])->first();
 
             if ($user) {
                 $token      = md5($user->email.rand());
@@ -263,7 +263,7 @@ class Auth extends BaseController {
                 ];
 
                 if ($this->validate($rules)) {
-                    $this->user_model->where(['email' => $valid_token->email])->set(['password' => $this->request->getPost('password'), 'email_verified' => 1])->update();
+                    $this->user_model->where(['email' => $valid_token->email])->set(['password' => $this->request->getPost('password')])->update();
 
                     $this->token_model->delete($valid_token->email);
 
