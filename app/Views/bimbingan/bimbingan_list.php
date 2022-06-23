@@ -9,9 +9,11 @@
                 <div class="col-sm-auto">
                   <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="Search">
                 </div>
+                <?php if (session('role') == 'mhs' ) { ?>
                 <div class="col-sm-auto">
                   <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addModal"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
                 </div>
+                <?php } ?>
               </div>
             </div>
             <div class="card-body fs--1">
