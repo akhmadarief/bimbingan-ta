@@ -2,28 +2,20 @@
 
 <?= $this->section('content') ?>
 
-          <div class="card mb-3 mb-lg-0">
+          <div id="listBimbingan" class="card mb-3 mb-lg-0" data-list='{"valueNames":["topik","jenis","mhs","dosen"],"page":6,"pagination":true}'>
             <div class="card-header bg-light d-flex justify-content-between">
               <h5 class="mb-0"><?= $title ?></h5>
-              <!-- <form>
-                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                  <option selected="selected">Select Category</option>
-                  <option>Health &amp; Wellness</option>
-                  <option>Business &amp; Professional</option>
-                  <option>Performing &amp; Visual Arts</option>
-                  <option>Science &amp; Technology</option>
-                  <option>Sports &amp; Fitness</option>
-                  <option>Charity &amp; Causes</option>
-                  <option>Film &amp; Media</option>
-                  <option>Fashion &amp; Beauty</option>
-                  <option>Travel &amp; Outdoor</option>
-                  <option>Entertainment</option>
-                  <option>Other</option>
-                </select>
-              </form> -->
+              <div class="row g-2">
+                <div class="col-sm-auto">
+                  <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="Search">
+                </div>
+                <div class="col-sm-auto">
+                  <button class="btn btn-falcon-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addModal"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="ms-1">New</span></button>
+                </div>
+              </div>
             </div>
             <div class="card-body fs--1">
-              <div class="row">
+              <div class="row list">
                 <?= $bimbingan ? '' : '<p class="mb-0 fs--1">Tidak ada data</p>' ?>
                 <?php foreach ($bimbingan as $bimbingan) { ?>
                 <div class="col-md-6 h-100">
@@ -33,7 +25,7 @@
                       <div class="row">
                         <div class="col">
                           <h6 class="fs-0 mb-0">
-                            <a href="#"><?= $bimbingan->topik ?> 
+                            <a href="#" class="topik"><?= $bimbingan->topik ?> 
                             <?php if ($bimbingan->status == 0) { ?>
                               <span class="badge rounded-pill badge-soft-warning">Pending</span>
                             <?php } else if ($bimbingan->status == 3) { ?>
@@ -41,7 +33,7 @@
                             <?php } ?>
                             </a>
                           </h6>
-                          <p class="mb-1"><?= $bimbingan->jenis == 1 ? 'Tugas Akhir' : ($bimbingan->jenis == 2 ? 'Kerja Praktik' : ($bimbingan->jenis == 3 ? 'Perlombaan' : ($bimbingan->jenis == 4 ? 'Penelitian' : ($bimbingan->jenis == 5 ? 'Perwalian' : 'Lainnya')))) ?></a></p>
+                          <p class="mb-1 jenis"><?= $bimbingan->jenis == 1 ? 'Tugas Akhir' : ($bimbingan->jenis == 2 ? 'Kerja Praktik' : ($bimbingan->jenis == 3 ? 'Perlombaan' : ($bimbingan->jenis == 4 ? 'Penelitian' : ($bimbingan->jenis == 5 ? 'Perwalian' : 'Lainnya')))) ?></a></p>
                         </div>
                         <div class="col-auto">
                           <div class="dropdown font-sans-serif position-static">
@@ -70,8 +62,8 @@
                           </div>
                         </div>
                       </div>
-                      <p class="text-1000 mb-0">Mahasiswa: <?= $bimbingan->mhs.' - '.$bimbingan->nim ?></p>
-                      <p class="text-1000 mb-0">Dosen: <?= $bimbingan->dosen.' - '.$bimbingan->nip ?></p>
+                      <p class="text-1000 mb-0 mhs">Mahasiswa: <?= $bimbingan->mhs.' - '.$bimbingan->nim ?></p>
+                      <p class="text-1000 mb-0 dosen">Dosen: <?= $bimbingan->dosen.' - '.$bimbingan->nip ?></p>
                       <p class="text-1000 mb-0">Tanggal: <?= date('d M Y',strtotime($bimbingan->created_at)) ?></p>
                       <div class="border-dashed-bottom my-3"></div>
                     </div>
@@ -79,21 +71,27 @@
                 </div>
                 <?php } ?>
               </div>
+              <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
+                <ul class="pagination mb-0"></ul>
+                <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right"> </span></button>
+              </div>
             </div>
           </div>
+
           <?php if (session('role') == 'mhs') { ?>
-          <div class="modal fade" id="new" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
               <div class="modal-content position-relative">
-                <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
-                  <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-0">
-                  <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
-                    <h4 class="mb-1" id="modalExampleDemoLabel">Pengajuan Bimbingan</h4>
+                <form method="POST" action="<?= base_url('mhs/bimbingan/add') ?>">
+                  <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+                    <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="p-4 pb-0">
-                    <form method="POST" action="<?= base_url('mhs/bimbingan/new') ?>">
+                  <div class="modal-body p-0">
+                    <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                      <h4 class="mb-1">Pengajuan Bimbingan</h4>
+                    </div>
+                    <div class="p-4 pb-0">
                       <div class="mb-3">
                         <label class="col-form-label" for="dosen">Dosen:</label>
                         <select class="form-select" aria-label="dosen" name="dosen" required>
@@ -119,13 +117,13 @@
                         <label class="col-form-label" for="topik">Topik:</label>
                         <textarea class="form-control" id="topik" name="topik" required></textarea>
                       </div>
-                      <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" type="submit">Simpan</button>
-                      </div>
-                    </form>
+                    </div>
                   </div>
-                </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
