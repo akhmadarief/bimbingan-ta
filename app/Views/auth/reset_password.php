@@ -36,6 +36,7 @@
                       <?php if (isset($validation)) { ?>
                       <div class="alert alert-danger" role="alert" style="padding-bottom: 0"><?= $validation->listErrors() ?></div>
                       <?php } ?>
+                      <?= csrf_field() ?>
                       <div class="mb-3">
                         <label class="form-label" for="split-reset-password">New Password</label>
                         <input class="form-control" type="password" id="split-reset-password" name="password" required />

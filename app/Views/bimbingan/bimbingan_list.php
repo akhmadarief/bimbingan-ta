@@ -86,6 +86,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
               <div class="modal-content position-relative">
                 <form method="POST" action="<?= base_url('mhs/bimbingan/add') ?>">
+                  <?= csrf_field() ?>
                   <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
                     <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>

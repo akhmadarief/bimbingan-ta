@@ -41,6 +41,7 @@
                     </div>
                     <form method="POST">
                       <?= session()->getFlashdata('alert') ?>
+                      <?= csrf_field() ?>
                       <?php if ($title == 'Register') { ?>
                       <div class="mb-3">
                         <label class="form-label" for="split-role">Role</label>

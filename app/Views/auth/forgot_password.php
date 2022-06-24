@@ -35,6 +35,7 @@
                       <h4 class="mb-0"> Forgot your password?</h4><small>Enter your email and we'll send you a reset link.</small>
                       <form class="mb-3 mt-4" method="POST">
                         <?= session()->getFlashdata('alert') ?>
+                        <?= csrf_field() ?>
                         <input class="form-control" type="email" name="email" placeholder="Email address" required />
                         <div class="mb-3"></div>
                         <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Send reset link</button>

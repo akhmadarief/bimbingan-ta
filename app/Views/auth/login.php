@@ -39,6 +39,7 @@
                     </div>
                     <form method="POST">
                       <?= session()->getFlashdata('alert') ?>
+                      <?= csrf_field() ?>
                       <div class="mb-3">
                         <label class="form-label" for="split-login-email">Email address</label>
                         <input class="form-control" id="split-login-email" type="email" name="email" required />

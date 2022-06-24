@@ -67,7 +67,7 @@
                       <div class="d-flex position-relative">
                         <div class="icon-item icon-item-sm border rounded-3 shadow-none me-2"><span class="fas fa-plus text-success"></span></div>
                         <div class="flex-1">
-                          <a class="stretched-link" type="button" href="#" data-bs-toggle="modal" data-bs-target="#add">
+                          <a class="stretched-link" type="button" href="#" data-bs-toggle="modal" data-bs-target="#addModal">
                             <h6 class="text-800 mb-0">Buat Pengajuan</h6>
                           </a>
                           <p class="mb-0 fs--2 text-500">Ajukan bimbingan baru</p>
@@ -201,18 +201,19 @@
           <?php } ?>
 
           <?php if (session('role') == 'mhs') { ?>
-          <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
               <div class="modal-content position-relative">
-                <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
-                  <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-0">
-                  <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
-                    <h4 class="mb-1" id="modalExampleDemoLabel">Pengajuan Bimbingan</h4>
+                <form method="POST" action="<?= base_url('mhs/bimbingan/add') ?>">
+                  <?= csrf_field() ?>
+                  <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+                    <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="p-4 pb-0">
-                    <form method="POST" action="<?= base_url('mhs/bimbingan/add') ?>">
+                  <div class="modal-body p-0">
+                    <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                      <h4 class="mb-1">Pengajuan Bimbingan</h4>
+                    </div>
+                    <div class="p-4 pb-0">
                       <div class="mb-3">
                         <label class="col-form-label" for="dosen">Dosen:</label>
                         <select class="form-select" aria-label="dosen" name="dosen" required>
@@ -238,13 +239,13 @@
                         <label class="col-form-label" for="topik">Topik:</label>
                         <textarea class="form-control" id="topik" name="topik" required></textarea>
                       </div>
-                      <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" type="submit">Simpan</button>
-                      </div>
-                    </form>
+                    </div>
                   </div>
-                </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

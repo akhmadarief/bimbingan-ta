@@ -38,23 +38,18 @@ $routes->set404Override();
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 
 $routes->group('/', ['filter' => 'noauth'], function($routes) {
-    $routes->get('login', 'Auth::login');
-    $routes->post('login', 'Auth::login');
-    $routes->get('forgot-password', 'Auth::forgot_password');
-    $routes->post('forgot-password', 'Auth::forgot_password');
-    $routes->get('reset-password/(:hash)', 'Auth::reset_password/$1');
-    $routes->post('reset-password/(:hash)', 'Auth::reset_password/$1');
+    $routes->match(['get','post'], 'login', 'Auth::login');
+    $routes->match(['get','post'], 'forgot-password', 'Auth::forgot_password');
+    $routes->match(['get','post'], 'reset-password/(:hash)', 'Auth::reset_password/$1');
 
     $routes->group('register', function($routes) {
-        $routes->get('/', 'Register::index');
-        $routes->post('/', 'Register::index');
+        $routes->match(['get','post'], '/', 'Register::index');
         $routes->get('verify/(:hash)', 'Register::verify/$1');
     });
 
     $routes->group('google', function($routes) {
         $routes->get('auth', 'Google::auth');
-        $routes->get('register', 'Google::register');
-        $routes->post('register', 'Google::register');
+        $routes->match(['get','post'], 'register', 'Google::register');
     });
 });
 
