@@ -68,7 +68,7 @@
                       <div class="divider-content-center">or log in with</div>
                     </div>
                     <div class="mt-2">
-                      <a class="btn btn-outline-google-plus btn-sm d-block w-100" href="<?= base_url('google/auth') ?>"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a>
+                      <a class="btn btn-outline-google-plus btn-sm d-block w-100" href="<?= base_url('google/login') ?>"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a>
                     </div>
                   </div>
                 </div>

@@ -1,55 +1,45 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
+use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\TokenModel;
 
-class Register extends BaseController {
+class Password extends BaseController {
 
     public function __construct() {
         $this->user_model   = new UserModel();
         $this->token_model  = new TokenModel();
     }
 
-    public function index() {
+    public function forgot(){
 
         if ($this->request->getMethod() == 'post') {
-            $rules = [
-                'name'              => 'required|min_length[3]|max_length[60]',
-                'nip/nim'           => 'required|min_length[14]|max_length[20]|is_natural',
-                'email'             => 'required|min_length[6]|max_length[60]|valid_email|is_unique[user.email]',
-                'password'          => 'required|min_length[6]|max_length[60]',
-                'confirm_password'  => 'matches[password]',
-                'role'              => 'required|min_length[3]|max_length[5]',
-            ];
 
-            if ($this->validate($rules)) {
-                $name               = $this->request->getPost('name');
-                $nip_nim            = $this->request->getPost('nip/nim');
-                $user_email         = $this->request->getPost('email');
-                $password           = $this->request->getPost('password');
-                $confirm_password   = $this->request->getPost('confirm_password');
-                $role               = $this->request->getPost('role');
-                $token              = md5($user_email.rand());
-                $expired_at         = date('Y-m-d H:i:s', strtotime('1 hour'));
+            $user = $this->user_model->where(['email' => $this->request->getPost('email'), 'email_verified' => 1])->first();
 
-                $this->user_model->insert([
-                    'name'      => $name,
-                    'nip_nim'   => $nip_nim,
-                    'email'     => $user_email,
-                    'password'  => $password,
-                    'role'      => $role
-                ]);
+            if ($user) {
+                $token      = md5($user->email.rand());
+                $expired_at = date('Y-m-d H:i:s', strtotime('1 hour'));
 
-                $this->token_model->insert([
-                    'email'         => $user_email,
-                    'type'          => 0,
+                $token_data = [
+                    'email'         => $user->email,
+                    'type'          => 1,
                     'token'         => $token,
                     'expired_at'    => $expired_at
-                ]);
+                ];
 
-                $url = base_url('register/verify/'.$token);
+                $token_exist = $this->token_model->find($user->email);
+
+                if ($token_exist) {
+                    $this->token_model->save($token_data);
+                }
+                else {
+                    $this->token_model->insert($token_data);
+                }
+
+                $url = base_url('reset-password/'.$token);
                 $email_msg = <<<HTML
                 <!DOCTYPE html>
                 <html>
@@ -154,7 +144,7 @@ class Register extends BaseController {
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                         <tr>
                             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                            <p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="#">App</a>, you can safely delete this email.</p>
+                            <p style="margin: 0;">Tap the button below to confirm your email address. If you didn't request for reset password for your account with <a href="#">App</a>, you can safely delete this email.</p>
                             </td>
                         </tr>
                         <tr>
@@ -188,7 +178,7 @@ class Register extends BaseController {
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                         <tr>
                             <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-                            <p style="margin: 0;">You received this email because we received a request for activate account.<br>If you didn't request activate you can safely delete this email.</p>
+                            <p style="margin: 0;">You received this email because we received a request for reset password for your account.<br>If you didn't request reset password you can safely delete this email.</p>
                             </td>
                         </tr>
                         </table>
@@ -201,50 +191,72 @@ class Register extends BaseController {
 
                 $email = \Config\Services::email();
 
-                $email->setTo($user_email);
-                $email->setSubject('Konfirmasi Registrasi');
+                $email->setTo($user->email);
+                $email->setSubject('Konfirmasi Reset Password');
                 $email->setMessage($email_msg);
 
                 if ($email->send()) {
                     $data['title'] = 'Confirm Mail';
-                    $data['email'] = $user_email;
-                    $data['msg'] = 'Please click on the included link to activate your account.';
+                    $data['email'] = $user->email;
+                    $data['msg'] = 'Please click on the included link to reset your password.';
+
                     return view('auth/confirm_mail', $data);
-                } 
+                }
                 else {
                     $data = $email->printDebugger(['headers']);
                     return print_r($data);
                 }
             }
             else {
-                return redirect()->back()->withInput()->with('alert', '<div class="alert alert-danger" style="padding-bottom: 0" role="alert">'.$this->validator->listErrors().'</div>');
+                return redirect()->to(base_url('forgot-password'))->with('alert', '<div class="alert alert-danger" role="alert">Your email is not registered.</div>');
             }
         }
 
-        $data['title'] = 'Register';
-        return view('auth/register', $data);
+        $data['title'] = 'Forgot Password';
+        return view('auth/forgot_password', $data);
     }
 
-    public function verify($token = NULL) {
+    public function reset($token = NULL) {
 
         $token_data = [
             'token'         => $token,
-            'type'          => 0,
+            'type'          => 1,
             'expired_at >'  => date('Y-m-d H:i:s')
         ];
 
         $valid_token = $this->token_model->where($token_data)->first();
 
-        if ($user_token) {
+        if ($valid_token) {
 
-            $this->user_model->where(['email' => $valid_token->email])->set(['email_verified' => 1])->update();
+            if ($this->request->getMethod() == 'post') {
+                $rules = [
+                    'password'          => 'required|min_length[6]|max_length[60]',
+                    'confirm_password'  => 'matches[password]'
+                ];
 
-            $this->token_model->delete($valid_token->email);
+                if ($this->validate($rules)) {
+                    $this->user_model->where(['email' => $valid_token->email])->set(['password' => $this->request->getPost('password')])->update();
 
-            return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your Email Address is successfully verified.<br>Please login to access your account.</div>');
+                    $this->token_model->delete($valid_token->email);
+
+                    return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-success" role="alert">Your password is successfully reset.<br>Please login again.</div>');
+                }
+                else {
+                    $data['validation'] = $this->validator;
+                }
+            }
+
+            $data['title'] = 'Reset Password';
+            return view('auth/reset_password', $data);
         }
         else {
-            return redirect()->to(base_url('login'))->with('alert', '<div class="alert alert-danger" role="alert">The link you followed has expired or not valid.</div>');
+            return redirect()->to(base_url('forgot-password'))->with('alert', '<div class="alert alert-danger" role="alert">The link you followed has expired or not valid.</div>');
         }
+    }
+
+    public function logout() {
+        session()->destroy();
+        $data['title'] = 'Logout';
+        return view('auth/logout', $data);
     }
 }
