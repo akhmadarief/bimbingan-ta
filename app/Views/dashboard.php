@@ -1,7 +1,6 @@
-<?= $this->extend('layout/page_layout') ?>
+<?= $this->extend('layouts/main_layout') ?>
 
 <?= $this->section('content') ?>
-
           <div class="row g-3 mb-3">
             <div class="col-xl-7">
               <div class="card bg-transparent-50 overflow-hidden">
@@ -250,5 +249,4 @@
             </div>
           </div>
           <?php } ?>
-
 <?= $this->endSection() ?>

@@ -1,7 +1,6 @@
-<?= $this->extend('layout/page_layout') ?>
+<?= $this->extend('layouts/main_layout') ?>
 
 <?= $this->section('content') ?>
-
           <div id="listBimbingan" class="card mb-3 mb-lg-0" data-list='{"valueNames":["topik","jenis","mhs","dosen"],"page":6,"pagination":true}'>
             <div class="card-header bg-light d-flex justify-content-between">
               <h5 class="mb-0"><?= $title ?></h5>
@@ -131,5 +130,4 @@
             </div>
           </div>
           <?php } ?>
-
 <?= $this->endSection() ?>

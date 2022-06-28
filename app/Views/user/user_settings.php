@@ -1,7 +1,6 @@
-<?= $this->extend('layout/page_layout') ?>
+<?= $this->extend('layouts/main_layout') ?>
 
 <?= $this->section('content') ?>
-
           <div class="card mb-3">
             <div class="card-header position-relative min-vh-25 mb-7">
               <div class="bg-holder rounded-3 rounded-bottom-0" style="background-image:url(../../assets/img/generic/4.jpg);">
@@ -74,5 +73,4 @@
               </div>
             </div>
           </div>
-
 <?= $this->endSection() ?>

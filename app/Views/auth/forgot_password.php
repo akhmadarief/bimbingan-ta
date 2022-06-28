@@ -1,23 +1,6 @@
-<!DOCTYPE html>
-<html lang="en-US" dir="ltr">
+<?= $this->extend('layouts/auth_layout') ?>
 
-  <?= $this->include('layout/head') ?>
-
-  <body>
-
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
-    <main class="main" id="top">
-      <div class="container-fluid">
-        <script>
-          var isFluid = JSON.parse(localStorage.getItem('isFluid'));
-          if (isFluid) {
-            var container = document.querySelector('[data-layout]');
-            container.classList.remove('container');
-            container.classList.add('container-fluid');
-          }
-        </script>
+<?= $this->section('content') ?>
         <div class="row min-vh-100 bg-100">
           <div class="col-6 d-none d-lg-block position-relative">
             <div class="bg-holder overlay" style="background-image:url(<?= base_url('assets/img/generic/17.jpg') ?>);background-position: 50% 76%;">
@@ -47,17 +30,4 @@
             </div>
           </div>
         </div>
-      </div>
-    </main>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
-
-    <!-- ===============================================-->
-    <!--    JavaScripts-->
-    <!-- ===============================================-->
-    <?= $this->include('layout/js') ?>
-
-  </body>
-
-</html>
+<?= $this->endSection() ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 
-  <?= $this->include('layout/head') ?>
+  <?= $this->include('layouts/partials/head') ?>
 
   <body>
 
@@ -19,13 +19,13 @@
           }
         </script>
 
-        <?= $this->include('layout/sidebar') ?>
+        <?= $this->include('layouts/partials/sidebar') ?>
 
         <div class="content">
-          <?= $this->include('layout/navbar') ?>
-          <?= $this->include('layout/breadcumb') ?>
+          <?= $this->include('layouts/partials/navbar') ?>
+          <?= $this->include('layouts/partials/breadcumb') ?>
           <?= $this->renderSection('content') ?>
-          <?= $this->include('layout/footer') ?>
+          <?= $this->include('layouts/partials/footer') ?>
         </div>
       </div>
     </main>
@@ -36,9 +36,8 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
-    <?= $this->include('layout/js') ?>
-
-    <?= $title == 'Dosen' || $title == 'Mahasiswa' ? $this->include('user/user_js') : '' ?>
+    <?= $this->include('layouts/partials/js') ?>
+    <?= $this->renderSection('js') ?>
 
   </body>
 

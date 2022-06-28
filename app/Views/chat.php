@@ -1,7 +1,6 @@
-<?= $this->extend('layout/page_layout') ?>
+<?= $this->extend('layouts/main_layout') ?>
 
 <?= $this->section('content') ?>
-
           <div class="card card-chat overflow-hidden">
             <div class="card-body d-flex p-0 h-100">
               <div class="chat-sidebar">
@@ -2061,5 +2060,4 @@
               </div>
             </div>
           </div>
-
 <?= $this->endSection() ?>
