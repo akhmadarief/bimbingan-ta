@@ -9,12 +9,12 @@ class Email extends BaseConfig
     /**
      * @var string
      */
-    public $fromEmail = 'noreply@example.com';
+    public $fromEmail;
 
     /**
      * @var string
      */
-    public $fromName = 'No Reply';
+    public $fromName;
 
     /**
      * @var string
@@ -26,7 +26,7 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $userAgent = 'Bimbingan App';
+    public $userAgent = 'Sikiba';
 
     /**
      * The mail sending protocol: mail, sendmail, smtp
@@ -47,28 +47,28 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = 'smtp.mailtrap.io';
+    public $SMTPHost;
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'f2f1d84e629c16';
+    public $SMTPUser;
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '669ec7288ddb67';
+    public $SMTPPass;
 
     /**
      * SMTP Port
      *
      * @var int
      */
-    public $SMTPPort = 2525;
+    public $SMTPPort = 25;
 
     /**
      * SMTP Timeout (in seconds)
@@ -131,7 +131,7 @@ class Email extends BaseConfig
      *
      * @var int
      */
-    public $priority = 3;
+    public $priority = 1;
 
     /**
      * Newline character. (Use “\r\n” to comply with RFC 822)
@@ -167,4 +167,14 @@ class Email extends BaseConfig
      * @var bool
      */
     public $DSN = false;
+
+    public function __construct() {
+        $this->fromEmail = $_ENV['FROM_EMAIL'];
+        $this->fromName = $_ENV['FROM_NAME'];
+        $this->SMTPHost = $_ENV['SMTP_HOST'];
+        $this->SMTPUser = $_ENV['SMTP_USER'];
+        $this->SMTPPass = $_ENV['SMTP_PASS'];
+        $this->SMTPPort = $_ENV['SMTP_PORT'];
+        $this->SMTPCrypto = $_ENV['SMTP_CRYPTO'];
+    }
 }

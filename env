@@ -16,6 +16,17 @@
 
 # CI_ENVIRONMENT = production
 
+FROM_EMAIL = noreply@example.com
+FROM_NAME = Sikiba
+SMTP_HOST =
+SMTP_USER =
+SMTP_PASS =
+SMTP_PORT = 25
+SMTP_CRYPTO = tls
+
+CLIENT_ID =
+CLIENT_SECRET =
+
 #--------------------------------------------------------------------
 # APP
 #--------------------------------------------------------------------

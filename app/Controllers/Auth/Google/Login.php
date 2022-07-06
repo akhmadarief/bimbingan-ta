@@ -11,8 +11,8 @@ class Login extends BaseController {
 
     public function index() {
 
-        $client_id      = '714503460771-6f8jc6f703oi5idra9hk46plcc1tb716.apps.googleusercontent.com';
-        $client_secret  = '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';
+        $client_id      = $_ENV['CLIENT_ID'];
+        $client_secret  = $_ENV['CLIENT_SECRET'];
         $redirect_uri   = base_url('google/login');
         $state          = session('state') ?? bin2hex(random_bytes(128/8));
 
