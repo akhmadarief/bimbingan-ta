@@ -14,6 +14,9 @@ class Login extends BaseController {
         $client_id      = '714503460771-6f8jc6f703oi5idra9hk46plcc1tb716.apps.googleusercontent.com';
         $client_secret  = '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';
         $redirect_uri   = base_url('google/login');
+        $state          = session('state') ?? bin2hex(random_bytes(128/8));
+
+        session()->set('state', $state);
 
         $client = new Client();
         $client->setClientId($client_id);
@@ -21,15 +24,17 @@ class Login extends BaseController {
         $client->setRedirectUri($redirect_uri);
         $client->addScope('email');
         $client->addScope('profile');
+        $client->setState($state);
         $client->setPrompt('select_account');
 
         if (isset($_GET['code'])) {
 
             $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
 
-            if (isset($token['access_token'])) {
+            if (isset($token['access_token']) && session('state') == $_GET['state']) {
 
                 session()->set('access_token', $token['access_token']);
+                session()->remove('state');
 
                 $client->setAccessToken($token['access_token']);
 
@@ -68,6 +73,10 @@ class Login extends BaseController {
 
                     return redirect()->to(base_url(session('role').'/dashboard'))->with('toastr', 'toastr.success("Selamat datang, '.$user->name.'")');
                 }
+            }
+            else {
+                session()->remove('state');
+                exit('Wrong state');
             }
         }
 
