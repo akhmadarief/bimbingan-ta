@@ -16,46 +16,54 @@ class Register extends BaseController {
     public function index() {
 
         if ($this->request->getMethod() == 'post') {
-            $rules = [
-                'name'              => 'required|min_length[3]|max_length[60]',
-                'nip/nim'           => 'required|min_length[14]|max_length[20]|is_natural',
-                'email'             => 'required|min_length[6]|max_length[60]|valid_email|is_unique[user.email]',
-                'password'          => 'required|min_length[6]|max_length[60]',
-                'confirm_password'  => 'matches[password]',
-                'role'              => 'required|min_length[3]|max_length[5]',
-            ];
 
-            if ($this->validate($rules)) {
-                $name               = $this->request->getPost('name');
-                $nip_nim            = $this->request->getPost('nip/nim');
-                $email         = $this->request->getPost('email');
-                $password           = $this->request->getPost('password');
-                $confirm_password   = $this->request->getPost('confirm_password');
-                $role               = $this->request->getPost('role');
-                $token              = md5($user_email.rand());
-                $expired_at         = date('Y-m-d H:i:s', strtotime('1 hour'));
+            $throttler = \Config\Services::throttler();
 
-                $this->user_model->insert([
-                    'name'      => $name,
-                    'nip_nim'   => $nip_nim,
-                    'email'     => $email,
-                    'password'  => $password,
-                    'role'      => $role
-                ]);
+            if ($throttler->check(md5($this->request->getIPAddress()), 5, 300)) {
+                $rules = [
+                    'name'              => 'required|min_length[3]|max_length[60]',
+                    'nip/nim'           => 'required|min_length[14]|max_length[20]|is_natural',
+                    'email'             => 'required|min_length[6]|max_length[60]|valid_email|is_unique[user.email]',
+                    'password'          => 'required|min_length[6]|max_length[60]',
+                    'confirm_password'  => 'matches[password]',
+                    'role'              => 'required|min_length[3]|max_length[5]',
+                ];
 
-                $this->token_model->insert([
-                    'email'         => $email,
-                    'type'          => 0,
-                    'token'         => $token,
-                    'expired_at'    => $expired_at
-                ]);
+                if ($this->validate($rules)) {
+                    $name               = $this->request->getPost('name');
+                    $nip_nim            = $this->request->getPost('nip/nim');
+                    $email         = $this->request->getPost('email');
+                    $password           = $this->request->getPost('password');
+                    $confirm_password   = $this->request->getPost('confirm_password');
+                    $role               = $this->request->getPost('role');
+                    $token              = md5($user_email.rand());
+                    $expired_at         = date('Y-m-d H:i:s', strtotime('1 hour'));
 
-                $url = base_url('register/verify/'.$token);
+                    $this->user_model->insert([
+                        'name'      => $name,
+                        'nip_nim'   => $nip_nim,
+                        'email'     => $email,
+                        'password'  => $password,
+                        'role'      => $role
+                    ]);
 
-                return $this->sendVerifyEmailAddress($email, $url);
+                    $this->token_model->insert([
+                        'email'         => $email,
+                        'type'          => 0,
+                        'token'         => $token,
+                        'expired_at'    => $expired_at
+                    ]);
+
+                    $url = base_url('register/verify/'.$token);
+
+                    return $this->sendVerifyEmailAddress($email, $url);
+                }
+                else {
+                    return redirect()->back()->withInput()->with('alert', '<div class="alert alert-danger pb-0" role="alert">'.$this->validator->listErrors().'</div>');
+                }
             }
             else {
-                return redirect()->back()->withInput()->with('alert', '<div class="alert alert-danger pb-0" role="alert">'.$this->validator->listErrors().'</div>');
+                return redirect()->back()->withInput()->with('alert', '<div class="alert alert-danger" role="alert">You requested too many times.<br>Please wait for 5 minutes.</div>');
             }
         }
 

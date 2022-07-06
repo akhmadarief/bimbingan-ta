@@ -15,36 +15,46 @@ class Password extends BaseController {
 
     public function forgot(){
 
+        $throttler = \Config\Services::throttler();
+
         if ($this->request->getMethod() == 'post') {
 
-            $user = $this->user_model->where(['email' => $this->request->getPost('email'), 'email_verified' => 1])->first();
+            $throttler = \Config\Services::throttler();
 
-            if ($user) {
-                $token      = md5($user->email.rand());
-                $expired_at = date('Y-m-d H:i:s', strtotime('1 hour'));
+            if ($throttler->check(md5($this->request->getIPAddress()), 5, 300)) {
 
-                $token_data = [
-                    'email'         => $user->email,
-                    'type'          => 1,
-                    'token'         => $token,
-                    'expired_at'    => $expired_at
-                ];
+                $user = $this->user_model->where(['email' => $this->request->getPost('email'), 'email_verified' => 1])->first();
 
-                $token_exist = $this->token_model->find($user->email);
+                if ($user) {
+                    $token      = md5($user->email.rand());
+                    $expired_at = date('Y-m-d H:i:s', strtotime('1 hour'));
 
-                if ($token_exist) {
-                    $this->token_model->save($token_data);
+                    $token_data = [
+                        'email'         => $user->email,
+                        'type'          => 1,
+                        'token'         => $token,
+                        'expired_at'    => $expired_at
+                    ];
+
+                    $token_exist = $this->token_model->find($user->email);
+
+                    if ($token_exist) {
+                        $this->token_model->save($token_data);
+                    }
+                    else {
+                        $this->token_model->insert($token_data);
+                    }
+
+                    $url = base_url('reset-password/'.$token);
+
+                    return $this->sendResetPasswordNotification($user->email, $url);
                 }
                 else {
-                    $this->token_model->insert($token_data);
+                    return redirect()->to(base_url('forgot-password'))->with('alert', '<div class="alert alert-danger" role="alert">Your email is not registered.</div>');
                 }
-
-                $url = base_url('reset-password/'.$token);
-
-                return $this->sendResetPasswordNotification($user->email, $url);
             }
             else {
-                return redirect()->to(base_url('forgot-password'))->with('alert', '<div class="alert alert-danger" role="alert">Your email is not registered.</div>');
+                return redirect()->back()->with('alert', '<div class="alert alert-danger" role="alert">You requested too many times.<br>Please wait for 5 minutes.</div>');
             }
         }
 
