@@ -20,7 +20,9 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
+$routes->set404Override(function() {
+    return view('errors/404', ['title' => 'Page Not Found']);
+});
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
@@ -37,17 +39,17 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 
-$routes->group('/', ['filter' => 'noauth'], function($routes) {
+$routes->group('/', ['filter' => 'noauth'], static function ($routes) {
     $routes->match(['get','post'], 'login', 'Auth\Login::index');
     $routes->match(['get','post'], 'forgot-password', 'Auth\Password::forgot');
     $routes->match(['get','post'], 'reset-password/(:hash)', 'Auth\Password::reset/$1');
 
-    $routes->group('register', function($routes) {
+    $routes->group('register', static function ($routes) {
         $routes->match(['get','post'], '/', 'Auth\Register::index');
         $routes->get('verify/(:hash)', 'Auth\Register::verify/$1');
     });
 
-    $routes->group('google', function($routes) {
+    $routes->group('google', static function ($routes) {
         $routes->get('login', 'Auth\Google\Login::index');
         $routes->match(['get','post'], 'register', 'Auth\Google\Register::index');
     });
@@ -55,7 +57,7 @@ $routes->group('/', ['filter' => 'noauth'], function($routes) {
 
 $routes->get('chat', 'Chat::index', ['filter' => 'auth']);
 
-$routes->group('admin', ['filter' => 'admin'], function($routes) {
+$routes->group('admin', ['filter' => 'admin'], static function ($routes) {
     $routes->get('dashboard', 'Admin\Dashboard::index');
     $routes->group('user', static function ($routes) {
         $routes->get('dosen', 'Admin\User::dosen');
@@ -66,7 +68,7 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     });
 });
 
-$routes->group('dosen', ['filter' => 'dosen'], function($routes) {
+$routes->group('dosen', ['filter' => 'dosen'], static function ($routes) {
     $routes->get('dashboard', 'Dosen\Dashboard::index');
     $routes->group('bimbingan', static function ($routes) {
         $routes->get('submission', 'Dosen\Bimbingan::submission');
@@ -80,7 +82,7 @@ $routes->group('dosen', ['filter' => 'dosen'], function($routes) {
     });
 });
 
-$routes->group('mhs', ['filter' => 'mhs'], function($routes) {
+$routes->group('mhs', ['filter' => 'mhs'], static function ($routes) {
     $routes->get('dashboard', 'Mhs\Dashboard::index');
     $routes->group('bimbingan', static function ($routes) {
         $routes->get('submission', 'Mhs\Bimbingan::submission');
@@ -90,7 +92,7 @@ $routes->group('mhs', ['filter' => 'mhs'], function($routes) {
     });
 });
 
-$routes->group('user', ['filter' => 'auth'], function($routes) {
+$routes->group('user', ['filter' => 'auth'], static function ($routes) {
     $routes->get('settings', 'User::settings');
     $routes->post('update-profile', 'User::update_profile');
     $routes->post('update-password', 'User::update_password');
